@@ -17,8 +17,8 @@ class ProductViewModel {
     return this.product.benefits;
   }
 
-  int get price {
-    return  this.product.price;
+  int get currentPrice {
+    return  this.product.currentPrice;
   }
   int get oldPrice {
     return this.product.oldPrice;

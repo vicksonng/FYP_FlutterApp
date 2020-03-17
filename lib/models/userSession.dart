@@ -10,4 +10,5 @@ class UserSession {
       role: json['role']
     );
   }
+
 }

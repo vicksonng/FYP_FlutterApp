@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:untitled/models/cartItem.dart';
+import 'package:http/http.dart' as http;
 
 class CartListViewModel extends ChangeNotifier {
 
   List<CartItem> cartList = [];
 
-  double subTotal = 0;
+  double total = 0;
 
   void addItem(CartItem cartItem) {
     //Check duplicated product
@@ -49,17 +52,65 @@ class CartListViewModel extends ChangeNotifier {
 
   void clearCart() {
     cartList = [];
-    subTotal = 0;
+    total = 0;
     notifyListeners();
   }
 
   void calTotal(){
-    subTotal = 0;
+    total = 0;
     if(cartList.length > 0 ){
       for(int i = 0 ; i < cartList.length ; i++) {
-        subTotal += (cartList[i].product.price * cartList[i].qty);
+       total += (cartList[i].product.currentPrice * cartList[i].qty);
       }
     }
+  }
+
+  void submitOrder(userID) async {
+    if(cartList.length > 0) {
+//      var url = 'http://localhost:1337/order/create';
+      var url = 'https://fypsailsjs.herokuapp.com/order/create';
+      print(url);
+//    var response = await http.get(url);
+//    print(jsonDecode(response.body));
+//    Map<String, String> headers = {"Content-type": "application/json"};
+      var cartListInfo = [];
+      for(int i = 0 ; i < cartList.length ; i ++ ){
+        cartList[i].calSubTotal();
+        cartListInfo.add({
+          'productID': cartList[i].product.id,
+          'qty': cartList[i].qty,
+          'subTotal': cartList[i].subTotal,
+        });
+      }
+      Map data = {
+        "userID" : userID,
+        "cartListInfo": cartListInfo,
+        "total": total,
+      };
+      print(data);
+      var json = jsonEncode(data);
+      print(jsonDecode(json));
+      var  response = await http.post(
+          url,
+          headers: {"Content-Type": "application/json"},
+          body: json
+      );
+//      // check the status code for the result
+//      int statusCode = response.statusCode;
+//      print(statusCode);
+//      var body = jsonDecode(response.body);
+
+
+//      print(body);
+//      if(statusCode == 200){
+//        this.session =  UserSession.fromJson(body);
+//        print(this.session.userID);
+//        return true;
+//      }else {
+//        return false;
+//      }
+    }
+
   }
 
 }

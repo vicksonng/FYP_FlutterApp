@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/models/cartItem.dart';
 import 'package:untitled/view_models/cartListViewModel.dart';
+import 'package:untitled/view_models/userViewModel.dart';
 import 'package:untitled/views/components/cart_products.dart';
 import 'package:untitled/views/components/quantityPicker.dart';
 import 'package:provider/provider.dart';
@@ -93,7 +94,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                         flex: 1,
                           child: Container(
                             padding: EdgeInsets.all(5),
-                            child: Text("\$"+ cartItems[index].product.price.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: Text("\$"+ cartItems[index].product.currentPrice.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
 
                           )
                       ),
@@ -117,10 +118,12 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
         child: Row(
           children: <Widget>[
             Expanded(
-              child:  Text("合共 \$" + cartListVM.subTotal.toString()),
+              child:  Text("合共 \$" + cartListVM.total.toString()),
               ),
             Expanded(
-              child: new MaterialButton(onPressed: (){},
+              child: new MaterialButton(onPressed: (){
+                cartListVM.submitOrder(Provider.of<UserViewModel>(context).userID);
+              },
                 color: Colors.red,
                 child:  new Text("結帳",
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),

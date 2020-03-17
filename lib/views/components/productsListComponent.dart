@@ -23,7 +23,8 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
   Future<List<Product>> product_list;
 
   Future<List<Product>> getProducts(String productType) async {
-    var url = 'http://localhost:1337/products/category/' + productType;
+//    var url = 'http://localhost:1337/products/category/' + productType;
+    var url = 'https://fypsailsjs.herokuapp.com/products/category/' + productType;
     print(url);
     var response = await http.get(url);
 //    print(jsonDecode(response.body));
@@ -189,13 +190,14 @@ class ProductWidget extends StatelessWidget {
 
 
     Future<bool> addSearchHistory() async {
-      var url = 'http://localhost:1337/user/searched';
+//      var url = 'http://localhost:1337/user/searched';
+      var url = 'https://fypsailsjs.herokuapp.com/user/searched';
       print(url);
 //    var response = await http.get(url);
 //    print(jsonDecode(response.body));
 //    Map<String, String> headers = {"Content-type": "application/json"};
       Map data = {
-        "userID" : Provider.of<UserViewModel>(context, listen: false).session.userID,
+        "userID" : Provider.of<UserViewModel>(context, listen: false).userID,
         "productID" : this.product.id,
       };
       var json = jsonEncode(data);
@@ -247,7 +249,7 @@ class ProductWidget extends StatelessWidget {
                           ),
                           Spacer(),
                           Text(
-                            "\$"+product.price.toString(),
+                            "\$"+product.currentPrice.toString(),
                             style: TextStyle(
                                 color: Colors.red, fontWeight: FontWeight.w800),
                           ),

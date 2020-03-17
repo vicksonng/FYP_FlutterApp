@@ -22,7 +22,8 @@ class _RecommendedListJaccardComponentState extends State<RecommendedListJaccard
   Future<List<Product>> product_list;
 
   Future<List<Product>> getRecommendation(int id) async {
-    var url = 'http://localhost:1337/products/findJaccard/' + id.toString();
+//    var url = 'http://localhost:1337/products/findJaccard/' + id.toString();
+    var url = 'https://fypsailsjs.herokuapp.com/products/getRecommendationsJaccard/' + id.toString();
     print(url);
     var response = await http.get(url);
     print(jsonDecode(response.body));
@@ -141,7 +142,7 @@ class ProductWidget extends StatelessWidget {
                               ),
                               Spacer(),
                               Text(
-                                "\$"+product.price.toString(),
+                                "\$"+product.currentPrice.toString(),
                                 style: TextStyle(
                                     color: Colors.red, fontWeight: FontWeight.w800),
                               ),

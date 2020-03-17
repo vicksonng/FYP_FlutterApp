@@ -6,7 +6,8 @@ import 'package:untitled/models/product.dart';
 class WebService {
 
   Future<List<Product>> fetchProducts() async{
-    final url = 'http://localhost:1337/getAllProducts';
+    var url = 'https://fypsailsjs.herokuapp.com/getAllProducts';
+//    final url = 'http://localhost:1337/getAllProducts';
     final response = await http.get(url);
     if(response.statusCode == 200) {
 

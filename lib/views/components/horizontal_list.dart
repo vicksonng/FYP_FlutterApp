@@ -54,6 +54,9 @@ class Category extends StatelessWidget {
     child:InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => this.path));
+        if(this.path == FlutterFactsChatBot()){
+          print(" can check path");
+        }
       },
       child: Container(
         width: 100.0,

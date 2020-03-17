@@ -127,7 +127,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     child: Row(
                       children: <Widget>[
                         new Text("優惠價 ", style: TextStyle(color: Colors.red, fontSize: 15, decoration: null, fontWeight: FontWeight.bold),),
-                        new Text("\$"+ widget.product.price.toString(), style: TextStyle(color: Colors.red, fontSize: 30, decoration: null, fontWeight: FontWeight.bold),),
+                        new Text("\$"+ widget.product.currentPrice.toString(), style: TextStyle(color: Colors.red, fontSize: 30, decoration: null, fontWeight: FontWeight.bold),),
                       ],
                     ),
                   ),

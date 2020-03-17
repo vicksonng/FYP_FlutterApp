@@ -229,6 +229,14 @@ class _HomePageState extends State<HomePage> {
             )
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // Add your onPressed code here!
+        },
+        label: Text("小幫手"),
+        icon: Icon(Icons.adb),
+        backgroundColor: Colors.green,
+      ),
     );
   }
 }
