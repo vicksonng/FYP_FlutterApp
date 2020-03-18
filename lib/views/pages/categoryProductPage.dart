@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/models/category.dart';
+import 'package:untitled/view_models/productListViewModel.dart';
 import 'package:untitled/views/components/productsListComponent.dart';
 import 'package:untitled/views/pages/shoppingCartPage.dart';
 
@@ -61,7 +63,7 @@ class _CategoryProductPageState extends State<CategoryProductPage>{
 
 
           Container(
-            child: new ProductsListComponent(widget.category.productType),
+            child: ProductsListComponent(widget.category.productType),
             height: 400,
 
           )

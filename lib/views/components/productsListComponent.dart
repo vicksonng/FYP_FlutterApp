@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/models/productList.dart';
+import 'package:untitled/view_models/productListViewModel.dart';
 import 'package:untitled/view_models/userViewModel.dart';
 import 'package:untitled/views/pages/productDetailsPage.dart';
 import 'dart:io';
@@ -22,26 +23,26 @@ class ProductsListComponent extends StatefulWidget {
 class _ProductsListComponentState extends State<ProductsListComponent> {
   Future<List<Product>> product_list;
 
-  Future<List<Product>> getProducts(String productType) async {
+//  Future<List<Product>> getProducts(String productType) async {
 //    var url = 'http://localhost:1337/products/category/' + productType;
-    var url = 'https://fypsailsjs.herokuapp.com/products/category/' + productType;
-    print(url);
-    var response = await http.get(url);
-//    print(jsonDecode(response.body));
-    var result = jsonDecode(response.body);
-//    print(result[0]);
-
-//    print(Product.fromJson((result[0])).toString());
-
-    List<dynamic> product_list_dynamic = result.map((i) => Product.fromJson(i)).toList();
-    List<Product> product_list = new List<Product>();
-    for(int i = 0; i < product_list_dynamic.length ; i ++){
-      product_list.add(product_list_dynamic[i]);
-    }
-
-//      ProductList productList = new ProductList(products: product_list);
-    return product_list;
-  }
+////    var url = 'https://fypsailsjs.herokuapp.com/products/category/' + productType;
+//    print(url);
+//    var response = await http.get(url);
+////    print(jsonDecode(response.body));
+//    var result = jsonDecode(response.body);
+////    print(result[0]);
+//
+////    print(Product.fromJson((result[0])).toString());
+//
+//    List<dynamic> product_list_dynamic = result.map((i) => Product.fromJson(i)).toList();
+//    List<Product> product_list = new List<Product>();
+//    for(int i = 0; i < product_list_dynamic.length ; i ++){
+//      product_list.add(product_list_dynamic[i]);
+//    }
+//
+////      ProductList productList = new ProductList(products: product_list);
+//    return product_list;
+//  }
 
   @override
   void initState() {
@@ -99,7 +100,8 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
     return Container(
       child: FutureBuilder(
         builder: _futureProductsList,
-        future: getProducts(widget.productType)
+//        future: getProducts(widget.productType)
+          future: Provider.of<ProductListViewModel>(context, listen: false).getProductsType(widget.productType),
       )
     );
 
@@ -107,83 +109,10 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
   }
 }
 
-
-//    return GridView.builder(
-//      itemCount: widget.product_list.length,
-//      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-//        crossAxisCount: 2,
-//
-//      ),
-////        itemBuilder: (BuildContext context, int index){
-////          return Product(
-////            productName: widget.product_list[index]['name'],
-////            picture: widget.product_list[index]['picture'],
-////            oldPrice: widget.product_list[index]['oldPrice'],
-////            price: widget.product_list[index]['price'],
-////            benefits: widget.product_list[index]['benefits'],
-////            ingredients: widget.product_list[index]['ingredients']
-////          );
-////        }
-//        itemBuilder: (BuildContext context, int index){
-//          return Product(
-//              productName: widget.product_list[index]['productName'],
-//              picture: widget.product_list[index]['imgName'],
-//              oldPrice: widget.product_list[index]['oldPrice'],
-//              price: widget.product_list[index]['currentPrice'],
-//              benefits: widget.product_list[index]['benefits'],
-//              ingredients: widget.product_list[index]['ingredients']
-//          );
-//        }
-//    );
-
-
-
-    // ver 1
-//    return GridView.builder(
-//      itemCount: widget.product_list.length,
-//      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-//        crossAxisCount: 2,
-//
-//      ),
-////        itemBuilder: (BuildContext context, int index){
-////          return Product(
-////            productName: widget.product_list[index]['name'],
-////            picture: widget.product_list[index]['picture'],
-////            oldPrice: widget.product_list[index]['oldPrice'],
-////            price: widget.product_list[index]['price'],
-////            benefits: widget.product_list[index]['benefits'],
-////            ingredients: widget.product_list[index]['ingredients']
-////          );
-////        }
-//        itemBuilder: (BuildContext context, int index){
-//          return Product(
-//              productName: widget.product_list[index]['productName'],
-//              picture: widget.product_list[index]['imgName'],
-//              oldPrice: widget.product_list[index]['oldPrice'],
-//              price: widget.product_list[index]['currentPrice'],
-//              benefits: widget.product_list[index]['benefits'],
-//              ingredients: widget.product_list[index]['ingredients']
-//          );
-//        }
-//    );
-//  }
-//}
-
-class ProductViewModel {
-  Stream<String> productName;
-  Stream<String> picture;
-  Stream<String> oldPrice;
-  Stream<String> price;
-  Stream<String> ingredients;
-}
-
 class ProductWidget extends StatelessWidget {
   final Product product;
 
   ProductWidget({this.product});
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -210,8 +139,6 @@ class ProductWidget extends StatelessWidget {
       int statusCode = response.statusCode;
       print(statusCode);
       var body = jsonDecode(response.body);
-
-
       print(body);
       if(statusCode == 200){
 //        this.session =  UserSession.fromJson(body);
@@ -271,66 +198,4 @@ class ProductWidget extends StatelessWidget {
 }
 
 
-//class Product extends StatelessWidget {
-//  final productName;
-//  final picture;
-//  final oldPrice;
-//  final price;
-//  final benefits;
-//  final ingredients;
-//
-//  Product({this.productName, this.picture, this.oldPrice, this.price, this.benefits, this.ingredients});
-//
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Card(
-//      child: Hero(
-//          tag: productName,
-//          child: Material(
-//            child: InkWell(
-//              onTap: () => Navigator.of(context).push(new MaterialPageRoute(
-//                  builder: (context) => new ProductDetails(
-//                    productDetailsName: productName,
-//                    productDetailsPrice: price,
-//                    productDetailsOldPrice: oldPrice,
-//                    productDetailsImg: picture,
-//                    productDetailsBenefits: benefits,
-//                    productDetailsIngredients: ingredients,
-//
-//                  ))),
-//              child: GridTile(
-//                footer: Container(
-//                  padding: EdgeInsets.all(5.0),
-//                  color: Colors.white,
-//                  child: Row(
-//                    children: <Widget>[
-//                       Text (productName,
-//                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-//                       ),
-//                      Spacer(),
-//                      Text(
-//                        "\$$price",
-//                        style: TextStyle(
-//                          color: Colors.red, fontWeight: FontWeight.w800),
-//                      ),
-//
-//                    ],
-//                  )
-//                ),
-//                child: Image.asset(
-//                  picture,
-//                  fit: BoxFit.cover,
-//                )
-//              ),
-//            ),
-//          ),
-//
-//      )
-//    );
-//
-//
-//  }
-
-//}
 

@@ -21,6 +21,12 @@ class FlutterFactsChatBot extends StatefulWidget {
 class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
   final List<Facts> messageList = <Facts>[];
   final TextEditingController _textController = new TextEditingController();
+//  Function(String) callback;
+
+  callback(String text) {
+    print(text);
+    _submitQuery(text);
+  }
 
   @override
   void initState() {
@@ -28,6 +34,8 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
     super.initState();
     agentResponse("你好");
   }
+
+
 
   Widget _queryInputWidget(BuildContext context) {
     return Card(
@@ -76,20 +84,15 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
         messageList.insert(0, message2);
       });
     }
-
-//    print(response.getListMessage()[0]["quickReplies"]);
-
-
-//    print(response.getListMessage()[1].quickReplies);
 //    response.getListMessage()
 //    var card = CardDialogflow(response.getListMessage()[0]).title;
 //    print(card);
-    Facts message = Facts(
-      text: response.getMessage() ??
-          CardDialogflow(response.getListMessage()[0]).title,
-      name: "Flutter",
-      type: false,
-    );
+//    Facts message = Facts(
+//      text: response.getMessage() ??
+//          CardDialogflow(response.getListMessage()[0]).title,
+//      name: "Flutter",
+//      type: false,
+//    );
 //    setState(() {
 //      messageList.insert(0, message);
 //    });
@@ -105,73 +108,41 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
           imgURL: "",
           buttonText: "",
           messageType: 0,
+          callback: callback
       );
-    } else { // Card
+    } else{ // Card
       var card = resListMessage["card"];
-      return new Facts(
-        text: "",
-        name: "小幫手",
-        type: false,
-        title: card["title"],
-///       subtitle: card[,
-        subtitle: "",
-        imgURL: card["imageUri"],
-        buttonText: card["buttons"][0]["text"],
-        messageType: 1,
-      );
+
+      if( card["title"] == "product"){
+        return new Facts(
+            text: "",
+            name: "小幫手",
+            type: false,
+            title: card["title"],
+            subtitle: card["subtitle"],
+            imgURL: card["imageUri"],
+            buttonText: card["buttons"][0]["text"],
+            messageType: 2,
+            callback: callback
+        );
+
+      }else{
+        return new Facts(
+            text: "",
+            name: "小幫手",
+            type: false,
+            title: card["title"],
+            subtitle: card["subtitle"],
+            imgURL: card["imageUri"],
+            buttonText: card["buttons"][0]["text"],
+            messageType: 1,
+            callback: callback
+        );
+
+      }
+
     }
   }
-//  String title = "";
-//      String subTitle = "";
-//      String imgURL = "";
-//      String buttonText = "";
-//      String buttonURL = "";
-//      String text = "";
-//      for(var i = 0 ; i < resListMessage.length ; i++) {
-//        if(resListMessage[i]["text"] != null){
-//
-//          print("1");
-//        }else if(resListMessage[i]["quickReplies"] != null){
-//          for(var j = 0 ; j < resListMessage[i]["quickReplies"]["quickReplies"].length; j++){
-////              suggestionList.add(new Suggestion(resListMessage[i]["quickReplies"]["quickReplies"][j].toString()));
-//          }
-//          print("2");
-//          print(resListMessage[i]["quickReplies"]["quickReplies"]);
-//        }else if(resListMessage[i]["card"] != null){
-//          print(resListMessage[i]["card"]["title"]);
-//          print(resListMessage[i]["card"]["buttons"][0]["text"]);
-//
-//          var card = resListMessage[i]["card"];
-//          title = card["title"];
-//          subTitle = card["subTitle"];
-//          imgURL = card["imageUri"];
-//          buttonText = card["buttons"][0]["text"];
-//          buttonURL = card["buttons"][0]["postback"];
-////            richResponseList.add(new RichResponse(title, subTitle, imgURL, buttonText, buttonURL));
-//
-//          print("3");
-//        }
-//      }
-//
-////    }
-
-
-//    List<TextMessage> textMessageList = [];
-//    List<RichResponse> richResponseList = [];
-//    List<Suggestion> suggestionList = [];
-//    if(resListMessage.length > 0){
-//      for(var i = 0 ; i < resListMessage.length ; i++) {
-//        if(resListMessage[i]["text"] != null){
-//          print(resListMessage[i]["text"]["text"]);
-//        }else if(resListMessage[i]["quickReplies"] != null){
-//          print(resListMessage[i]["quickReplies"]["quickReplies"]);
-//        }else if(resListMessage[i]["card"] != null){
-//          print(resListMessage[i]["card"]["imageUri"]);
-//          print(resListMessage[i]["card"]["buttons"][0]["text"]);
-//        }
-//      }
-//    }
-//  }
 
   void _submitQuery(String text) {
     _textController.clear();
@@ -191,9 +162,9 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Flutter Facts", style: TextStyle(color: Colors.green[400]),),
-        backgroundColor: Colors.white,
-        elevation: 0,
+        title: Text("鴻福堂小幫手", style: TextStyle(color: Colors.white,)),
+        backgroundColor: Colors.lightGreen,
+        elevation: 0.1,
       ),
       body: Column(children: <Widget>[
         Flexible(

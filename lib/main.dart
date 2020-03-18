@@ -4,6 +4,8 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/view_models/cartListViewModel.dart';
 import 'package:untitled/view_models/userViewModel.dart';
+import 'package:untitled/view_models/productListViewModel.dart';
+
 
 //import package here
 import 'package:untitled/views/components/horizontal_list.dart';
@@ -11,6 +13,8 @@ import 'package:untitled/views/components/productsListComponent.dart';
 import 'package:untitled/views/pages/categoriesPage.dart';
 import 'package:untitled/views/pages/shoppingCartPage.dart';
 import 'package:http/http.dart' as http;
+
+import 'dialogflow/dialog_flow.dart';
 
 void main() {
   runApp(
@@ -30,9 +34,6 @@ void main() {
 //  });
 //}
 
-//Future<http.Response> fetchPhotos() async {
-//  return await http.get('http://localhost:1337/test');
-//}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(builder: (_) => CartListViewModel()),
           ChangeNotifierProvider(builder: (_) => UserViewModel()),
+          ChangeNotifierProvider(builder: (_) => ProductListViewModel()),
         ],
         child: MaterialApp(
             title: 'Hung Fook Tong',
@@ -76,14 +78,12 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
-
 }
 
 class _HomePageState extends State<HomePage> {
 
   Future<List<dynamic>> products;
 
-//  var res = fetchPhotos();
   @override
 //  initState(){
 //    super.initState();
@@ -231,11 +231,11 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Add your onPressed code here!
+          Navigator.push(context, MaterialPageRoute(builder: (context) => FlutterFactsChatBot()));
         },
         label: Text("小幫手"),
         icon: Icon(Icons.adb),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.lightGreen,
       ),
     );
   }

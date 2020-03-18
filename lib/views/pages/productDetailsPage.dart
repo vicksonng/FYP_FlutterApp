@@ -11,21 +11,7 @@ import 'package:untitled/models/product.dart';
 class ProductDetailsPage extends StatefulWidget {
   final Product product;
   ProductDetailsPage(this.product);
-//  final productDetailsName;
-//  final productDetailsPrice;
-//  final productDetailsOldPrice;
-//  final productDetailsImg;
-//  final productDetailsBenefits;
-//  final productDetailsIngredients;
-//
-//  ProductDetails({
-//    this.productDetailsName,
-//    this.productDetailsPrice,
-//    this.productDetailsOldPrice,
-//    this.productDetailsImg,
-//    this.productDetailsBenefits,
-//    this.productDetailsIngredients
-//  });
+
 
   @override
   _ProductDetailsPageState createState() => _ProductDetailsPageState();
@@ -39,7 +25,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       setState(() {
         qty = newQty;
       });
-
   }
 
   void _showDialog() {

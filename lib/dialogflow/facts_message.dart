@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/dialogflow/dialog_flow.dart';
+import 'package:untitled/models/product.dart';
+import 'package:untitled/view_models/productListViewModel.dart';
+import 'package:untitled/views/components/quantityPicker.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/views/pages/productDetailsPage.dart';
+
 
 class Facts extends StatelessWidget {
-
-
   final String text;
   final String name;
   final bool type;
@@ -11,39 +16,93 @@ class Facts extends StatelessWidget {
   final String subtitle;
   final String buttonText;
   final int messageType;
+
+  Function(String) callback;
+  Function(int) callback2;
 //  final String = imgURL;
-  Facts({this.text, this.name, this.type, this.imgURL, this.title, this.subtitle,this.buttonText, this.messageType});
+  Facts({this.text, this.name, this.type, this.imgURL, this.title, this.subtitle,this.buttonText, this.messageType, this.callback});
 
   List<Widget> botMessage(context) {
+    int quantity = 0;
+    callback2 = (int qty){
+      quantity = qty;
+      print(quantity);
+    };
     Widget messageBody;
-    Widget buttons;
-    if(buttonText == "1"){
-      buttons = new Column(
-        children: <Widget>[
-          FlatButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(18.0),
-                side: BorderSide(color: Colors.red)
-            ),
-            onPressed:() {},
-            child: Text("購買商品")
-
-          ),
-          FlatButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(18.0),
-                  side: BorderSide(color: Colors.red)
-              ),
-              onPressed:() {},
-              child: Text("取得推薦")
-
-          )
-        ],
-      );
-
-    }else{
-      buttons = new Container();
-    }
+//    Widget buttons;
+//    if(buttonText == "1"){
+//      buttons = new Column(
+//        children: <Widget>[
+//          FlatButton(
+//            shape: RoundedRectangleBorder(
+//                borderRadius: new BorderRadius.circular(18.0),
+//                side: BorderSide(color: Colors.red)
+//            ),
+//            onPressed:() {
+//                callback("購買商品");
+//              },
+//            child: Text("購買商品")
+//
+//          ),
+//          FlatButton(
+//              shape: RoundedRectangleBorder(
+//                  borderRadius: new BorderRadius.circular(18.0),
+//                  side: BorderSide(color: Colors.red)
+//              ),
+//              onPressed:() {
+//                callback("請問有什麼推薦？");
+//              },
+//              child: Text("取得推薦")
+//
+//          )
+//        ],
+//      );
+//
+//    }else if(buttonText == "2"){
+//      buttons =
+//      new Column(
+//        children: <Widget>[
+//          new Row(
+//             children: <Widget>[
+//               new QuantityPicker(0, callback2),
+//               Expanded(
+//                 child:
+//                 MaterialButton(
+//                     color: Colors.lightGreen,
+//                     shape: RoundedRectangleBorder(
+//                         borderRadius: new BorderRadius.circular(18.0),
+////                         side: BorderSide(color: Colors.red)
+//                     ),
+//                     onPressed: (){},
+//                     child: Text("購買", style: TextStyle(color: Colors.lightGreen),)
+//                 )
+//               ),
+//             ],
+//            ),
+//          new Row(
+//            children: <Widget>[
+//              Expanded(
+//                  child: MaterialButton(
+//                      color: Colors.lightGreen,
+//                      shape: RoundedRectangleBorder(
+//                          borderRadius: new BorderRadius.circular(18.0),
+////                          side: BorderSide(color: Colors.red)
+//                      ),
+//                      onPressed: (){
+//                        Navigator.of(context).push(new MaterialPageRoute(
+//                            builder: (context) =>
+//                            new ProductDetailsPage(product)
+//                        ));
+//                      },
+//                      child: Text("查看詳情", style: TextStyle(color: Colors.white),)
+//                  )
+//              )
+//
+//            ],
+//          )
+//        ],
+//      );
+//    }
 
 
     if(messageType == 0){ // simple text message
@@ -51,12 +110,105 @@ class Facts extends StatelessWidget {
       messageBody = Text(text, );
 
     }else if (messageType == 1){ // card response
-      print("messageType = 1");
+//      print("messageType = 1");
+      print("in product");
       messageBody = new Column(
         children: <Widget>[
           Image.network(imgURL),
           Text(title),
-          buttons
+          new Column(
+            children: <Widget>[
+              FlatButton(
+                color: Colors.lightGreen,
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(18.0),
+//                  side: BorderSide(color: Colors.red)
+                ),
+                onPressed:() {
+                  callback("購買商品");
+                  },
+                child: Text("購買商品", style: TextStyle(color: Colors.white),)
+
+              ),
+              FlatButton(
+                  color: Colors.lightGreen,
+                  shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(18.0),
+//                  side: BorderSide(color: Colors.red)
+                  ),
+                onPressed:() {
+                  callback("請問有什麼推薦？");
+                  },
+                child: Text("取得推薦", style: TextStyle(color: Colors.white))
+
+              )
+            ],
+          )
+        ],
+      );
+    } else if(messageType == 2) {
+      Product product = Provider.of<ProductListViewModel>(context).getSingleProduct(int.parse(subtitle));
+      messageBody = new Column(
+        children: <Widget>[
+          Image.network(product.picture),
+          Row(
+            children: <Widget>[
+              Text(
+                product.productName,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Text("功效："),
+              Text(product.benefits),
+            ],
+          ),
+          new Column(
+            children: <Widget>[
+              new Row(
+                children: <Widget>[
+                  new QuantityPicker(0, callback2),
+                  Expanded(
+                      child:
+                      MaterialButton(
+                          color: Colors.lightGreen,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(18.0),
+//                         side: BorderSide(color: Colors.red)
+                          ),
+                          onPressed: (){},
+                          child: Text("購買", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)
+                      )
+                  ),
+                ],
+              ),
+              new Row(
+                children: <Widget>[
+                  Expanded(
+                      child: MaterialButton(
+                          color: Colors.lightGreen,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(18.0),
+//                          side: BorderSide(color: Colors.red)
+                          ),
+                          onPressed: (){
+                            Navigator.of(context).push(new MaterialPageRoute(
+                                builder: (context) =>
+                                new ProductDetailsPage(product)
+                            ));
+                          },
+                          child: Text("查看詳情", style: TextStyle(color: Colors.white),)
+                      )
+                  )
+
+                ],
+              )
+            ],
+          )
+
         ],
       );
     }
@@ -130,7 +282,7 @@ class Facts extends StatelessWidget {
           children: <Widget>[
 //            Text(this.name, style: Theme.of(context).textTheme.subhead),
             Card(
-                color: Colors.green[400],
+                color: Colors.lightGreen,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20))
                 ),

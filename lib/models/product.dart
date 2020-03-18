@@ -6,9 +6,10 @@ class Product {
   int currentPrice;
   String benefits;
   String ingredients;
+  String productType;
 
   Product(
-      {this.id, this.productName, this.picture, this.oldPrice, this.currentPrice, this.benefits, this.ingredients}
+      {this.id, this.productName, this.picture, this.oldPrice, this.currentPrice, this.benefits, this.ingredients, this.productType}
       );
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -19,7 +20,8 @@ class Product {
         oldPrice: json['oldPrice'],
         currentPrice: json['currentPrice'],
         benefits: json['benefits'],
-        ingredients: json['ingredients']
+        ingredients: json['ingredients'],
+        productType: json['productType']
     );
   }
 
