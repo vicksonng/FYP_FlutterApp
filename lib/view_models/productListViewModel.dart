@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:untitled/app/app.dart';
+import 'package:untitled/app/constant.dart';
 import 'package:untitled/models/product.dart';
 //import 'package:untitled/view_models/productViewModel.dart';
 import 'package:untitled/webServices.dart';
@@ -12,11 +13,10 @@ class ProductListViewModel extends ChangeNotifier {
   List<Product> products = List<Product>();
 
   Future<void> fetchProducts() async {
-    String urlPrefix = App.getUrlPrefix();
-    String urlSuffix = "/products/category/ALL";
-    String url = urlPrefix + urlSuffix;
-//    var url = 'http://localhost:1337/products/category/' + productType;
-//    var url = 'https://fypsailsjs.herokuapp.com/products/category/' + productType;
+//    String urlPrefix = Constant.getUrlPrefix();
+//    String urlSuffix = "/products/category/ALL";
+//    String url = urlPrefix + urlSuffix;
+    String url = Constant.getProductUrl;
     print(url);
     var response = await http.get(url);
     var result = jsonDecode(response.body);
@@ -56,6 +56,19 @@ class ProductListViewModel extends ChangeNotifier {
       }
     }
     return this.products[0];
+  }
+
+  List<Product> getProducts(List<int> productIdList){
+    List<Product> productList = [];
+    for(var i = 0 ; i < productIdList.length ; i++){
+      for(var j = 0 ; j < this.products.length ; i++) {
+        if(productIdList[i] == this.products[j].id){
+          productList.add(this.products[j]);
+          break;
+        }
+      }
+    }
+    return productList;
   }
 
 

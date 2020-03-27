@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/app/constant.dart';
 import 'package:untitled/models/productList.dart';
 import 'package:untitled/view_models/productListViewModel.dart';
 import 'package:untitled/view_models/userViewModel.dart';
@@ -8,6 +9,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:untitled/models/product.dart';
+import 'package:untitled/app/app.dart';
 
 class ProductsListComponent extends StatefulWidget {
   final String productType;
@@ -23,33 +25,10 @@ class ProductsListComponent extends StatefulWidget {
 class _ProductsListComponentState extends State<ProductsListComponent> {
   Future<List<Product>> product_list;
 
-//  Future<List<Product>> getProducts(String productType) async {
-//    var url = 'http://localhost:1337/products/category/' + productType;
-////    var url = 'https://fypsailsjs.herokuapp.com/products/category/' + productType;
-//    print(url);
-//    var response = await http.get(url);
-////    print(jsonDecode(response.body));
-//    var result = jsonDecode(response.body);
-////    print(result[0]);
-//
-////    print(Product.fromJson((result[0])).toString());
-//
-//    List<dynamic> product_list_dynamic = result.map((i) => Product.fromJson(i)).toList();
-//    List<Product> product_list = new List<Product>();
-//    for(int i = 0; i < product_list_dynamic.length ; i ++){
-//      product_list.add(product_list_dynamic[i]);
-//    }
-//
-////      ProductList productList = new ProductList(products: product_list);
-//    return product_list;
-//  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    //product_list = getProducts(widget.productType);
-    //print(product_list);
   }
   @override
   Widget _futureProductsList(BuildContext context, AsyncSnapshot snap) {
@@ -101,7 +80,7 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
       child: FutureBuilder(
         builder: _futureProductsList,
 //        future: getProducts(widget.productType)
-          future: Provider.of<ProductListViewModel>(context, listen: false).getProductsType(widget.productType),
+        future: Provider.of<ProductListViewModel>(context, listen: false).getProductsType(widget.productType),
       )
     );
 
@@ -120,8 +99,12 @@ class ProductWidget extends StatelessWidget {
 
     Future<bool> addSearchHistory() async {
 //      var url = 'http://localhost:1337/user/searched';
-      var url = 'https://fypsailsjs.herokuapp.com/user/searched';
+//      var url = 'https://fypsailsjs.herokuapp.com/user/searched';
+      String urlSuffix = "/user/searched";
+      String urlPrefix = Constant.getUrlPrefix();
+      String url = urlPrefix + urlSuffix;
       print(url);
+      print(this.product.id);
 //    var response = await http.get(url);
 //    print(jsonDecode(response.body));
 //    Map<String, String> headers = {"Content-type": "application/json"};
@@ -141,8 +124,6 @@ class ProductWidget extends StatelessWidget {
       var body = jsonDecode(response.body);
       print(body);
       if(statusCode == 200){
-//        this.session =  UserSession.fromJson(body);
-//        print(this.session.userID);
         return true;
       }else {
         return false;

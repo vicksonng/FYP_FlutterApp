@@ -26,6 +26,8 @@ dependencies:
   scoped_model: ^0.3.0
   provider: ^3.2.0
   flutter_dialogflow: ^0.1.2
+  flutter_swiper: ^1.1.6
+  dart_random_choice: ^0.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -80,7 +82,11 @@ flutter:
     - image/category_HS.jpg
     - image/category_ND.jpg
     - image/category_THJ.jpg
+    - image/bronzeCrown.png
+    - image/goldCrown.png
+    - image/sliverCrown.png
     - assets/fyp-sqfwqa-8dc97de3d033.json
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

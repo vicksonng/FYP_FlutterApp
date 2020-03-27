@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/app/constant.dart';
 import 'package:untitled/models/productList.dart';
+import 'package:untitled/view_models/userViewModel.dart';
 import 'package:untitled/views/pages/productDetailsPage.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:untitled/models/product.dart';
+import 'package:untitled/app/app.dart';
 
 class RecommendedListJaccardComponent extends StatefulWidget {
   final int reqID;
@@ -23,7 +27,10 @@ class _RecommendedListJaccardComponentState extends State<RecommendedListJaccard
 
   Future<List<Product>> getRecommendation(int id) async {
 //    var url = 'http://localhost:1337/products/findJaccard/' + id.toString();
-    var url = 'https://fypsailsjs.herokuapp.com/products/getRecommendationsJaccard/' + id.toString();
+    String urlPrefix = Constant.getUrlPrefix();
+    String urlSuffix = '/products/getRecommendationsJaccard/' + id.toString();
+    String url = urlPrefix +urlSuffix;
+//    var url = 'https://fypsailsjs.herokuapp.com/products/getRecommendationsJaccard/' + id.toString();
     print(url);
     var response = await http.get(url);
     print(jsonDecode(response.body));
@@ -117,6 +124,39 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Future<bool> addSearchHistory() async {
+//      var url = 'http://localhost:1337/user/searched';
+//      var url = 'https://fypsailsjs.herokuapp.com/user/searched';
+      String urlSuffix = "/user/searched";
+      String urlPrefix = Constant.getUrlPrefix();
+      String url = urlPrefix + urlSuffix;
+      print(url);
+      print(this.product.id);
+//    var response = await http.get(url);
+//    print(jsonDecode(response.body));
+//    Map<String, String> headers = {"Content-type": "application/json"};
+      Map data = {
+        "userID" : Provider.of<UserViewModel>(context, listen: false).userID,
+        "productID" : this.product.id,
+      };
+      var json = jsonEncode(data);
+      var  response = await http.post(
+          url,
+          headers: {"Content-Type": "application/json"},
+          body: json
+      );
+      // check the status code for the result
+      int statusCode = response.statusCode;
+      print(statusCode);
+      var body = jsonDecode(response.body);
+      print(body);
+      if(statusCode == 200){
+        return true;
+      }else {
+        return false;
+      }
+    }
     return Container(
         width: 200,
         height: 100,
@@ -125,11 +165,16 @@ class ProductWidget extends StatelessWidget {
               tag: product.productName,
               child: Material(
                 child: InkWell(
-                  onTap: () =>
-                      Navigator.of(context).push(new MaterialPageRoute(
-                          builder: (context) =>
-                          new ProductDetailsPage(product)
-                      )),
+                  onTap: () async {
+                    Navigator.of(context).push(new MaterialPageRoute(
+                        builder: (context) =>
+                        new ProductDetailsPage(product)
+
+                    ));
+                    var response = await addSearchHistory();
+                    print(response);
+                    print("added 3");
+                  },
                   child: GridTile(
                       footer: Container(
                           padding: EdgeInsets.all(5.0),
@@ -166,68 +211,3 @@ class ProductWidget extends StatelessWidget {
     );
   }
 }
-
-
-//class Product extends StatelessWidget {
-//  final productName;
-//  final picture;
-//  final oldPrice;
-//  final price;
-//  final benefits;
-//  final ingredients;
-//
-//  Product({this.productName, this.picture, this.oldPrice, this.price, this.benefits, this.ingredients});
-//
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Card(
-//      child: Hero(
-//          tag: productName,
-//          child: Material(
-//            child: InkWell(
-//              onTap: () => Navigator.of(context).push(new MaterialPageRoute(
-//                  builder: (context) => new ProductDetails(
-//                    productDetailsName: productName,
-//                    productDetailsPrice: price,
-//                    productDetailsOldPrice: oldPrice,
-//                    productDetailsImg: picture,
-//                    productDetailsBenefits: benefits,
-//                    productDetailsIngredients: ingredients,
-//
-//                  ))),
-//              child: GridTile(
-//                footer: Container(
-//                  padding: EdgeInsets.all(5.0),
-//                  color: Colors.white,
-//                  child: Row(
-//                    children: <Widget>[
-//                       Text (productName,
-//                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-//                       ),
-//                      Spacer(),
-//                      Text(
-//                        "\$$price",
-//                        style: TextStyle(
-//                          color: Colors.red, fontWeight: FontWeight.w800),
-//                      ),
-//
-//                    ],
-//                  )
-//                ),
-//                child: Image.asset(
-//                  picture,
-//                  fit: BoxFit.cover,
-//                )
-//              ),
-//            ),
-//          ),
-//
-//      )
-//    );
-//
-//
-//  }
-
-//}
-

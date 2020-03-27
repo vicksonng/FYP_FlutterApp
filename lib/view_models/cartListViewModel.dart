@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:untitled/app/constant.dart';
 import 'package:untitled/models/cartItem.dart';
 import 'package:http/http.dart' as http;
 
@@ -68,7 +69,8 @@ class CartListViewModel extends ChangeNotifier {
   void submitOrder(userID) async {
     if(cartList.length > 0) {
 //      var url = 'http://localhost:1337/order/create';
-      var url = 'https://fypsailsjs.herokuapp.com/order/create';
+//      var url = 'https://fypsailsjs.herokuapp.com/order/create';
+      var url = Constant.createOrderUrl;
       print(url);
 //    var response = await http.get(url);
 //    print(jsonDecode(response.body));

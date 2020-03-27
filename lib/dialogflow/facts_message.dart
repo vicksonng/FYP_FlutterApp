@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/dialogflow/dialog_flow.dart';
+import 'package:untitled/dialogflow/recommendationsMessage.dart';
 import 'package:untitled/models/product.dart';
 import 'package:untitled/view_models/productListViewModel.dart';
 import 'package:untitled/views/components/quantityPicker.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/views/pages/productDetailsPage.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 
 class Facts extends StatelessWidget {
@@ -29,81 +31,6 @@ class Facts extends StatelessWidget {
       print(quantity);
     };
     Widget messageBody;
-//    Widget buttons;
-//    if(buttonText == "1"){
-//      buttons = new Column(
-//        children: <Widget>[
-//          FlatButton(
-//            shape: RoundedRectangleBorder(
-//                borderRadius: new BorderRadius.circular(18.0),
-//                side: BorderSide(color: Colors.red)
-//            ),
-//            onPressed:() {
-//                callback("購買商品");
-//              },
-//            child: Text("購買商品")
-//
-//          ),
-//          FlatButton(
-//              shape: RoundedRectangleBorder(
-//                  borderRadius: new BorderRadius.circular(18.0),
-//                  side: BorderSide(color: Colors.red)
-//              ),
-//              onPressed:() {
-//                callback("請問有什麼推薦？");
-//              },
-//              child: Text("取得推薦")
-//
-//          )
-//        ],
-//      );
-//
-//    }else if(buttonText == "2"){
-//      buttons =
-//      new Column(
-//        children: <Widget>[
-//          new Row(
-//             children: <Widget>[
-//               new QuantityPicker(0, callback2),
-//               Expanded(
-//                 child:
-//                 MaterialButton(
-//                     color: Colors.lightGreen,
-//                     shape: RoundedRectangleBorder(
-//                         borderRadius: new BorderRadius.circular(18.0),
-////                         side: BorderSide(color: Colors.red)
-//                     ),
-//                     onPressed: (){},
-//                     child: Text("購買", style: TextStyle(color: Colors.lightGreen),)
-//                 )
-//               ),
-//             ],
-//            ),
-//          new Row(
-//            children: <Widget>[
-//              Expanded(
-//                  child: MaterialButton(
-//                      color: Colors.lightGreen,
-//                      shape: RoundedRectangleBorder(
-//                          borderRadius: new BorderRadius.circular(18.0),
-////                          side: BorderSide(color: Colors.red)
-//                      ),
-//                      onPressed: (){
-//                        Navigator.of(context).push(new MaterialPageRoute(
-//                            builder: (context) =>
-//                            new ProductDetailsPage(product)
-//                        ));
-//                      },
-//                      child: Text("查看詳情", style: TextStyle(color: Colors.white),)
-//                  )
-//              )
-//
-//            ],
-//          )
-//        ],
-//      );
-//    }
-
 
     if(messageType == 0){ // simple text message
       print("messageType = 0");
@@ -140,77 +67,85 @@ class Facts extends StatelessWidget {
                   callback("請問有什麼推薦？");
                   },
                 child: Text("取得推薦", style: TextStyle(color: Colors.white))
-
               )
             ],
           )
         ],
       );
     } else if(messageType == 2) {
-      Product product = Provider.of<ProductListViewModel>(context).getSingleProduct(int.parse(subtitle));
-      messageBody = new Column(
-        children: <Widget>[
-          Image.network(product.picture),
-          Row(
-            children: <Widget>[
-              Text(
-                product.productName,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
+      var productIdList = subtitle.split(' ');
+      List<Product> products = [];
+      for(var i= 0; i< productIdList.length ; i++ ){
+        Product product = Provider.of<ProductListViewModel>(context).getSingleProduct(int.parse(productIdList[i]));
+        products.add(product);
+      }
+      messageBody = new RecommendationsMessage(products);
+//      messageBody = new Container();
 
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Text("功效："),
-              Text(product.benefits),
-            ],
-          ),
-          new Column(
-            children: <Widget>[
-              new Row(
-                children: <Widget>[
-                  new QuantityPicker(0, callback2),
-                  Expanded(
-                      child:
-                      MaterialButton(
-                          color: Colors.lightGreen,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(18.0),
-//                         side: BorderSide(color: Colors.red)
-                          ),
-                          onPressed: (){},
-                          child: Text("購買", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)
-                      )
-                  ),
-                ],
-              ),
-              new Row(
-                children: <Widget>[
-                  Expanded(
-                      child: MaterialButton(
-                          color: Colors.lightGreen,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(18.0),
-//                          side: BorderSide(color: Colors.red)
-                          ),
-                          onPressed: (){
-                            Navigator.of(context).push(new MaterialPageRoute(
-                                builder: (context) =>
-                                new ProductDetailsPage(product)
-                            ));
-                          },
-                          child: Text("查看詳情", style: TextStyle(color: Colors.white),)
-                      )
-                  )
-
-                ],
-              )
-            ],
-          )
-
-        ],
-      );
+//      Product product = Provider.of<ProductListViewModel>(context).getSingleProduct(int.parse(subtitle));
+//      messageBody = new Column(
+//        children: <Widget>[
+//          Image.network(product.picture),
+//          Row(
+//            children: <Widget>[
+//              Text(
+//                product.productName,
+//                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+//              ),
+//
+//            ],
+//          ),
+//          Row(
+//            children: <Widget>[
+//              Text("功效："),
+//              Text(product.benefits),
+//            ],
+//          ),
+//          new Column(
+//            children: <Widget>[
+//              new Row(
+//                children: <Widget>[
+//                  new QuantityPicker(0, callback2),
+//                  Expanded(
+//                      child:
+//                      MaterialButton(
+//                          color: Colors.lightGreen,
+//                          shape: RoundedRectangleBorder(
+//                            borderRadius: new BorderRadius.circular(18.0),
+////                         side: BorderSide(color: Colors.red)
+//                          ),
+//                          onPressed: (){},
+//                          child: Text("購買", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)
+//                      )
+//                  ),
+//                ],
+//              ),
+//              new Row(
+//                children: <Widget>[
+//                  Expanded(
+//                      child: MaterialButton(
+//                          color: Colors.lightGreen,
+//                          shape: RoundedRectangleBorder(
+//                            borderRadius: new BorderRadius.circular(18.0),
+////                          side: BorderSide(color: Colors.red)
+//                          ),
+//                          onPressed: (){
+//                            Navigator.of(context).push(new MaterialPageRoute(
+//                                builder: (context) =>
+//                                new ProductDetailsPage(product)
+//                            ));
+//                          },
+//                          child: Text("查看詳情", style: TextStyle(color: Colors.white),)
+//                      )
+//                  )
+//
+//                ],
+//              )
+//            ],
+//          )
+//
+//        ],
+//      );
     }
 
     return <Widget>[

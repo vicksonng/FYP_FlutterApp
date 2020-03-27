@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/dialogflow/dialog_flow.dart';
+import 'package:untitled/models/recommendations.dart';
 import 'package:untitled/views/pages/categoriesPage.dart';
 import 'package:untitled/views/pages/loginPage.dart';
+import 'package:untitled/views/pages/recommendationsPage.dart';
 
 class HorizontalList extends StatelessWidget {
   @override
@@ -14,7 +16,7 @@ class HorizontalList extends StatelessWidget {
           Category(
             location: 'image/new.png' ,
             caption: "精選產品",
-            path: FlutterFactsChatBot(),
+            path: RecommendationsPage(),
           ),
           Category(
             location: 'image/sale.png' ,

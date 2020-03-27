@@ -15,7 +15,7 @@ class UserViewModel extends ChangeNotifier {
 //    "userID": 0,
 //    "role": "member"
 //  });
-  var userID = 0;
+  var userID = 1;
   var role = "member";
 
 
@@ -61,7 +61,7 @@ class UserViewModel extends ChangeNotifier {
   }
 
   void logout() {
-    this.userID = 0;
+    this.userID = 1;
     this.role = "member";
   }
 
