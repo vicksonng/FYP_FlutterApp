@@ -52,24 +52,26 @@ class CartListViewModel extends ChangeNotifier {
   }
 
   void clearCart() {
-    cartList = [];
-    total = 0;
+    this.cartList = [];
+    this.total = 0;
     notifyListeners();
   }
 
   void calTotal(){
-    total = 0;
+    double total = 0;
     if(cartList.length > 0 ){
       for(int i = 0 ; i < cartList.length ; i++) {
-       total += (cartList[i].product.currentPrice * cartList[i].qty);
+//       total += (cartList[i].product.currentPrice * cartList[i].qty);
+        total+= cartList[i].calSubTotal();
       }
     }
+    this.total = total;
+    notifyListeners();
   }
+
 
   void submitOrder(userID) async {
     if(cartList.length > 0) {
-//      var url = 'http://localhost:1337/order/create';
-//      var url = 'https://fypsailsjs.herokuapp.com/order/create';
       var url = Constant.createOrderUrl;
       print(url);
 //    var response = await http.get(url);

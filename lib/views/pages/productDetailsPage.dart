@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/models/cartItem.dart';
+import 'package:untitled/models/salesBuyXGetY.dart';
 import 'package:untitled/view_models/cartListViewModel.dart';
 import 'package:untitled/views/components/productsListComponent.dart';
 import 'package:untitled/views/components/quantityPicker.dart';
@@ -12,13 +13,15 @@ class ProductDetailsPage extends StatefulWidget {
   final Product product;
   ProductDetailsPage(this.product);
 
-
   @override
   _ProductDetailsPageState createState() => _ProductDetailsPageState();
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   int qty = 0;
+  var isSales = false;
+
+
 
   callback(newQty) {
       print(newQty);
@@ -52,7 +55,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    if(widget.product.salesBuyXGetYList.length > 0 || widget.product.salesDiscountList.length > 0 || widget.product.salesSpecialPriceList.length > 0){
+      isSales =true;
+    }
     return Scaffold(
         appBar: new AppBar(
           elevation: 0.1,
@@ -71,12 +76,23 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
         body: new ListView(
           children: <Widget>[
-            new Hero(
-              tag: widget.product.productName,
-              child: Image.network(widget.product.picture),
-//              child: Image.asset(
-//
+            new Stack(
+              children: <Widget>[
+                Hero(
+                  tag: widget.product.productName,
+                  child: Image.network(widget.product.picture),
+//                child: Image.asset(
 //                  widget.productDetailsImg, fit: BoxFit.fitHeight),
+                ),
+                isSales? Container(
+                  height: 100,
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Image.asset("image/sales.png")
+                  )
+                ): Container(),
+
+              ],
             ),
             Container(
               color: Colors.lightGreen,
@@ -129,6 +145,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 ],
               ),
             ),
+            isSales? Container(
+
+                      child:SalesWidget(widget.product)): Container(),
+
             Container(
                 color: Colors.white,
                 padding: EdgeInsets.all(5),
@@ -256,6 +276,109 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
      );
    }
 
+ }
+
+ class SalesWidget extends StatelessWidget{
+    Product product;
+    SalesWidget(this.product);
+    @override
+    Widget build(BuildContext context) {
+      // TODO: implement build
+      return Row(
+        children: <Widget>[
+          Container(
+            color: Colors.white,
+            child: Text("有效優惠"),
+            padding: EdgeInsets.all(5),
+          ),
+          Expanded(
+//            child: Container(
+//              height: 100,
+                child: Column(
+                  children: <Widget>[
+                    (product.salesBuyXGetYList.length >0)?
+                        Container(
+//                          height: 100,
+                          child:  ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: product.salesBuyXGetYList.length,
+                              itemBuilder: (BuildContext context, int index){
+                              return Container(
+                                  color: Colors.white,
+                                  padding: EdgeInsets.all(5),
+                                  child: ListTile(
+                                      title: Text("買" + product.salesBuyXGetYList[index].buyX.toString() + "送" + product.salesBuyXGetYList[index].getYFree.toString())
+                                  )
+
+                              );
+                                }
+                              )
+                        ):Container(),
+                    (product.salesDiscountList.length >0)?
+                    Container(
+                        child:  ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: product.salesDiscountList.length,
+                            itemBuilder: (BuildContext context, int index){
+                              return Container(
+                                  color: Colors.white,
+                                  padding: EdgeInsets.all(5),
+                                  child: ListTile(
+                                      title: Text("購買" + product.salesDiscountList[index].minQty.toString() + "件，即享有 \$" + product.salesDiscountList[index].discount.toString()+" 折扣優惠")
+                                  )
+
+                              );
+                            }
+                        )
+
+                    ):Container(),
+                    (product.salesDiscountRateList.length >0)?
+                    Container(
+                        child:  ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: product.salesDiscountRateList.length,
+                            itemBuilder: (BuildContext context, int index){
+                              return Container(
+                                  color: Colors.white,
+                                  padding: EdgeInsets.all(5),
+                                  child: ListTile(
+                                      title: Text("購買" + product.salesDiscountRateList[index].minQty.toString() + "件，即享有 " + product.salesDiscountRateList[index].discountRate.toString()+"% 折扣優惠")
+                                  )
+                              );
+                            }
+                        )
+
+                    ):Container(),
+                    (product.salesSpecialPriceList.length >0)?
+                    Container(
+                        child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: product.salesSpecialPriceList.length,
+                            itemBuilder: (BuildContext context, int index){
+                              return Container(
+                                  color: Colors.white,
+                                  padding: EdgeInsets.all(5),
+                                  child:  ListTile(
+                                      title: Text("購買" + product.salesSpecialPriceList[index].qty.toString() + "件，只需 \$" + product.salesSpecialPriceList[index].price.toString())
+                                  )
+                              );
+
+                            }
+                        )
+                    ):Container(),
+
+
+                  ],
+                )
+//            )
+          ),
+        ],
+      );
+    }
  }
 //class RecommendedProduct extends StatelessWidget {
 //  final Product product;

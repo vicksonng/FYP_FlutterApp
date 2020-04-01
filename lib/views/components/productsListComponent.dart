@@ -59,7 +59,8 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
                 itemCount: snap.data.length,
                 gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-
+                  childAspectRatio:
+                       MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height /1.9),
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   return ProductWidget(
@@ -95,6 +96,12 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isSales = false;
+
+    if(product.salesBuyXGetYList.length > 0 || product.salesDiscountList.length > 0 || product.salesSpecialPriceList.length > 0){
+      print("is ok");
+      isSales = true;
+    }
 
 
     Future<bool> addSearchHistory() async {
@@ -129,52 +136,68 @@ class ProductWidget extends StatelessWidget {
         return false;
       }
     }
-    return Card(
-        child: Hero(
-          tag: product.productName,
-          child: Material(
-            child: InkWell(
-              onTap: () async {
-                Navigator.of(context).push(new MaterialPageRoute(
-                    builder: (context) =>
-                    new ProductDetailsPage(product)
-                ));
-                var response = await addSearchHistory();
-                print(response);
-                print("added");
+    return Container(
+      height: 280,
+      child: Card(
+          child: Hero(
+            tag: product.productName,
+            child: Material(
+              child: InkWell(
+                onTap: () async {
+                  Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (context) =>
+                      new ProductDetailsPage(product)
+                  ));
+                  var response = await addSearchHistory();
+                  print(response);
+                  print("added");
 
-              },
+                },
 
-              child: GridTile(
-                  footer: Container(
-                      padding: EdgeInsets.all(5.0),
-                      color: Colors.white,
-                      child: Row(
-                        children: <Widget>[
-                          Text(product.productName,
-                            style: TextStyle(color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Spacer(),
-                          Text(
-                            "\$"+product.currentPrice.toString(),
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.w800),
-                          ),
+                child: GridTile(
+                    footer: Container(
+                        padding: EdgeInsets.all(5.0),
+                        color: Colors.white,
+                        child: Row(
+                          children: <Widget>[
+                            Text(product.productName,
+                              style: TextStyle(color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Spacer(),
+                            Text(
+                              "\$"+product.currentPrice.toString(),
+                              style: TextStyle(
+                                  color: Colors.red, fontWeight: FontWeight.w800),
+                            ),
 
-                        ],
-                      )
-                  ),
-                    child: Image.network(product.picture)
+                          ],
+                        )
+                    ),
+                    child: Stack(
+                      children: <Widget>[
+                        Image.network(product.picture),
+                        isSales? new Container(
+                            height: 80,
+                            child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Image.asset("image/sales.png")
+                            )
+                        ): Container()
+                      ],
+
+                    )
 //                    product.picture,
 //                    fit: BoxFit.cover,
 //                  )
+                ),
               ),
             ),
-          ),
 
-        )
+          )
+      )
     );
+
   }
 }
 

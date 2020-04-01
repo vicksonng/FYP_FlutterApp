@@ -1,3 +1,8 @@
+import 'package:untitled/models/salesBuyXGetY.dart';
+import 'package:untitled/models/salesDiscount.dart';
+import 'package:untitled/models/salesDiscountRate.dart';
+import 'package:untitled/models/salesSpecialPrice.dart';
+
 class Product {
   int id;
   String productName;
@@ -7,6 +12,11 @@ class Product {
   String benefits;
   String ingredients;
   String productType;
+  List<SalesBuyXGetY> salesBuyXGetYList = [];
+  List<SalesDiscount> salesDiscountList = [];
+  List<SalesSpecialPrice> salesSpecialPriceList = [];
+  List<SalesDiscountRate> salesDiscountRateList = [];
+
 
   Product(
       {this.id, this.productName, this.picture, this.oldPrice, this.currentPrice, this.benefits, this.ingredients, this.productType}

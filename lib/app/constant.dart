@@ -11,8 +11,10 @@ class Constant {
   static String createOrderUrl = url("/order/create");
   static String recommendationsTopViewUrl = url("/products/getTopView");
   static String recommendationsTopSalesUrl = url("/products/getTopSales");
-
-
+  static String salesBuyXGetYUrl = url("/sales/buyXGetY");
+  static String salesDiscountUrl = url("/sales/discount");
+  static String salesSpecialPriceUrl = url("/sales/specialPrice");
+  static String salesDiscountRateUrl = url("/sales/discountRate");
 
 
   static String url(String suffix){
@@ -26,6 +28,5 @@ class Constant {
       return urlPrefixProduction;
     }
   }
-//  static String urlID(String suffix)
 
 }
