@@ -33,11 +33,11 @@ class CartListViewModel extends ChangeNotifier {
   }
 
   void removeItem(int productID) {
-    for(int  i = 0 ; i < cartList.length ; i++) {
-      if(productID == cartList[i].product.id) {
+    for(int  i = 0 ; i < this.cartList.length ; i++) {
+      if(productID == this.cartList[i].product.id) {
         print("Can find delete item");
-        cartList.removeAt(i);
-        print(cartList.length);
+        this.cartList.removeAt(i);
+        print(this.cartList.length);
         break;
       }
     }
@@ -59,10 +59,13 @@ class CartListViewModel extends ChangeNotifier {
 
   void calTotal(){
     double total = 0;
-    if(cartList.length > 0 ){
-      for(int i = 0 ; i < cartList.length ; i++) {
+    if(this.cartList.length > 0 ){
+      for(int i = 0 ; i < this.cartList.length ; i++) {
+
 //       total += (cartList[i].product.currentPrice * cartList[i].qty);
-        total+= cartList[i].calSubTotal();
+        print(this.cartList[i].product.productName);
+        print(this.cartList[i].calSubTotal());
+        total+= this.cartList[i].calSubTotal();
       }
     }
     this.total = total;
@@ -79,11 +82,38 @@ class CartListViewModel extends ChangeNotifier {
 //    Map<String, String> headers = {"Content-type": "application/json"};
       var cartListInfo = [];
       for(int i = 0 ; i < cartList.length ; i ++ ){
+        var salesBuyXGetY = "";
+        var salesDiscount = "";
+        var salesDiscountRate =  "";
+        var salesSpecialPrice = "";
+        if(cartList[i].selectedSalesDiscountRateList.length > 0){
+          for(int j = 0 ; j< cartList[i].selectedSalesDiscountRateList.length ; j ++){
+            salesDiscountRate += (cartList[i].selectedSalesDiscountRateList[j].id.toString() + " ");
+          }
+        }
+        if(cartList[i].selectedSalesBuyXGetYList.length > 0){
+          for(int j = 0 ; j< cartList[i].selectedSalesBuyXGetYList.length ; j ++){
+            salesBuyXGetY += (cartList[i].selectedSalesBuyXGetYList[j].id.toString() + " ");
+          }
+        }
+        if(cartList[i].selectedSalesDiscountList.length > 0){
+          for(int j = 0 ; j< cartList[i].selectedSalesDiscountList.length ; j ++){
+            salesDiscount += (cartList[i].selectedSalesDiscountList[j].id.toString() + " ");
+          }
+        }
+        if(cartList[i].selectedSalesSpecialPriceList.length > 0){
+          for(int j = 0 ; j< cartList[i].selectedSalesSpecialPriceList.length ; j ++){
+            salesSpecialPrice += (cartList[i].selectedSalesSpecialPriceList[j].id.toString() + " ");
+          }
+        }
         cartList[i].calSubTotal();
         cartListInfo.add({
           'productID': cartList[i].product.id,
           'qty': cartList[i].qty,
           'subTotal': cartList[i].subTotal,
+          'salesBuyXGetYIdList' :salesBuyXGetY,
+          'salesDiscountIDIdList': salesDiscount,
+          'salesDiscountRateIdList': salesDiscountRate,
         });
       }
       Map data = {

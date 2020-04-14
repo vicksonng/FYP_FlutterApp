@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/view_models/cartListViewModel.dart';
+import 'package:untitled/view_models/categoryViewModel.dart';
+import 'package:untitled/view_models/promotionPageViewModel.dart';
+import 'package:untitled/view_models/promotionViewModel.dart';
 import 'package:untitled/view_models/userViewModel.dart';
 import 'package:untitled/view_models/productListViewModel.dart';
 
@@ -11,6 +14,7 @@ import 'package:untitled/view_models/productListViewModel.dart';
 import 'package:untitled/views/components/horizontal_list.dart';
 import 'package:untitled/views/components/productsListComponent.dart';
 import 'package:untitled/views/pages/categoriesPage.dart';
+import 'package:untitled/views/pages/categoryPage.dart';
 import 'package:untitled/views/pages/shoppingCartPage.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,8 +39,11 @@ void main() {
 //}
 
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  _MyAppState createState() => _MyAppState();
+}
+class _MyAppState extends State<MyApp>{
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -44,6 +51,8 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(builder: (_) => CartListViewModel()),
           ChangeNotifierProvider(builder: (_) => UserViewModel()),
           ChangeNotifierProvider(builder: (_) => ProductListViewModel()),
+          ChangeNotifierProvider(builder: (_) => CategoryViewModel()),
+          ChangeNotifierProvider(builder: (_) => PromotionPageViewModel()),
         ],
         child: MaterialApp(
             title: 'Hung Fook Tong',
@@ -122,95 +131,95 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
-      drawer: new Drawer(
-        child: new ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(
-                accountName: Text('NgCheukFung'),
-                accountEmail: Text('16215877@life.hkbu.edu.hk'),
-                currentAccountPicture: GestureDetector(
-                    child: new CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      child: Icon(Icons.person, color: Colors.white),
-                    ),
-                ),
-        decoration: new BoxDecoration(
-          color: Colors.green
-        ),
-            ),
-            InkWell(
-              onTap: (){},
-              child: ListTile(
-                title: Text('Home Page'),
-                leading: Icon(Icons.home),
-              )
-            ),
-            InkWell(
-                onTap: (){},
-                child: ListTile(
-                  title: Text('My Account'),
-                  leading: Icon(Icons.person),
-                )
-            ),
-            InkWell(
-                onTap: (){},
-                child: ListTile(
-                  title: Text('My Orders'),
-                  leading: Icon(Icons.shopping_cart),
-                )
-            ),
-            InkWell(
-                onTap: (){},
-                child: ListTile(
-                  title: Text('My E-Coupon'),
-                  leading: Icon(Icons.card_giftcard),
-                )
-            ),
-            InkWell(
-                onTap: (){
-                  Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesPage()));
-                },
-                child: ListTile(
-                  title: Text('Products'),
-                  leading: Icon(Icons.fastfood),
-                )
-            ),
-            InkWell(
-                onTap: (){},
-                child: ListTile(
-                  title: Text('Promotion'),
-                  leading: Icon(Icons.event),
-                )
-            ),
-            InkWell(
-                onTap: (){},
-                child: ListTile(
-                  title: Text('Recommendation'),
-                  leading: Icon(Icons.favorite),
-                )
-            ),
-
-            Divider(),
-
-            InkWell(
-                onTap: (){},
-                child: ListTile(
-                  title: Text('Setting'),
-                  leading: Icon(Icons.settings),
-                )
-            ),
-            InkWell(
-                onTap: (){},
-                child: ListTile(
-                  title: Text('Help'),
-                  leading: Icon(Icons.help),
-                )
-            ),
-
-          ],
-        ),
-      ),
+//      drawer: new Drawer(
+//        child: new ListView(
+//          children: <Widget>[
+//            new UserAccountsDrawerHeader(
+//                accountName: Text('NgCheukFung'),
+//                accountEmail: Text('16215877@life.hkbu.edu.hk'),
+//                currentAccountPicture: GestureDetector(
+//                    child: new CircleAvatar(
+//                      backgroundColor: Colors.grey,
+//                      child: Icon(Icons.person, color: Colors.white),
+//                    ),
+//                ),
+//        decoration: new BoxDecoration(
+//          color: Colors.green
+//        ),
+//            ),
+//            InkWell(
+//              onTap: (){},
+//              child: ListTile(
+//                title: Text('Home Page'),
+//                leading: Icon(Icons.home),
+//              )
+//            ),
+//            InkWell(
+//                onTap: (){},
+//                child: ListTile(
+//                  title: Text('My Account'),
+//                  leading: Icon(Icons.person),
+//                )
+//            ),
+//            InkWell(
+//                onTap: (){},
+//                child: ListTile(
+//                  title: Text('My Orders'),
+//                  leading: Icon(Icons.shopping_cart),
+//                )
+//            ),
+//            InkWell(
+//                onTap: (){},
+//                child: ListTile(
+//                  title: Text('My E-Coupon'),
+//                  leading: Icon(Icons.card_giftcard),
+//                )
+//            ),
+//            InkWell(
+//                onTap: (){
+//                  Navigator.pop(context);
+//                  Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryPage()));
+//                },
+//                child: ListTile(
+//                  title: Text('Products'),
+//                  leading: Icon(Icons.fastfood),
+//                )
+//            ),
+//            InkWell(
+//                onTap: (){},
+//                child: ListTile(
+//                  title: Text('Promotion'),
+//                  leading: Icon(Icons.event),
+//                )
+//            ),
+//            InkWell(
+//                onTap: (){},
+//                child: ListTile(
+//                  title: Text('Recommendation'),
+//                  leading: Icon(Icons.favorite),
+//                )
+//            ),
+//
+//            Divider(),
+//
+//            InkWell(
+//                onTap: (){},
+//                child: ListTile(
+//                  title: Text('Setting'),
+//                  leading: Icon(Icons.settings),
+//                )
+//            ),
+//            InkWell(
+//                onTap: (){},
+//                child: ListTile(
+//                  title: Text('Help'),
+//                  leading: Icon(Icons.help),
+//                )
+//            ),
+//
+//          ],
+//        ),
+//      ),
         body: new ListView(
           children: <Widget>[
             //image Carousel Begins

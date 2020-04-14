@@ -24,14 +24,13 @@ class SalesSpecialPrice {
       startDate: json['startDate'],
       endDate: json['this.endDate'],
       restrictedOne: json['restrictedOne']
-
     );
   }
 
   double calPrice(int qty , double subTotal){
     double newPrice = subTotal;
     if(qty > this.qty){
-      price -= this.price;
+      newPrice -= this.price;
     }
     return newPrice;
 

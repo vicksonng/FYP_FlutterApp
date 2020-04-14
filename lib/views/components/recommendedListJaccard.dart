@@ -159,7 +159,7 @@ class ProductWidget extends StatelessWidget {
     }
     return Container(
         width: 200,
-        height: 100,
+//        height: 100,
         child: Card(
             child: Hero(
               tag: product.productName,

@@ -22,7 +22,10 @@ class CartItem{
       };
 
   calSubTotal() {
-    var subTotal = this.product.currentPrice * qty.toDouble();
+    print("ProductName:" + this.product.productName);
+    print("qty " + qty.toString());
+    var subTotal = this.product.currentPrice * this.qty.toDouble();
+    print("SubTotal = " + subTotal.toString());
     if(this.selectedSalesBuyXGetYList.length > 0){
       for(int i = 0 ; i < this.selectedSalesBuyXGetYList.length ; i ++){
         subTotal = this.selectedSalesBuyXGetYList[i].calPrice(this.qty, subTotal);
@@ -48,6 +51,7 @@ class CartItem{
       }
     }
     this.subTotal = subTotal;
+    print("SubTotal after sales: "+ this.subTotal.toString());
     return this.subTotal;
   }
   double getSubTotal() {
@@ -55,24 +59,34 @@ class CartItem{
   }
 
   int addSalesBuyXGetY(SalesBuyXGetY salesBuyXGetY){
-    if(this.isRestricted()){
-      print("is Restricted");
-      return 0;
-    }else{
-      bool isAdded = false;
-      for(int i = 0 ; i < this.selectedSalesBuyXGetYList.length ; i ++){
-        if(this.selectedSalesBuyXGetYList[i].id == salesBuyXGetY.id){
-          print(this.selectedSalesBuyXGetYList[i].id.toString() + " vs " + salesBuyXGetY.id.toString());
-          isAdded = true;
-          return 1;
-        }
-      }
-      if(!isAdded){
-        this.selectedSalesBuyXGetYList.add(salesBuyXGetY);
-        return 2;
+
+    bool isAdded = false;
+    for(int i = 0 ; i < this.selectedSalesBuyXGetYList.length ; i ++){
+      if(this.selectedSalesBuyXGetYList[i].id == salesBuyXGetY.id){
+        print(this.selectedSalesBuyXGetYList[i].id.toString() + " vs " + salesBuyXGetY.id.toString());
+        isAdded = true;
+        return 1;
       }
     }
-    return 1;
+    if(!isAdded){
+      if(salesBuyXGetY.restrictedOne){
+        if(this.isEmpty()){
+          this.selectedSalesBuyXGetYList.add(salesBuyXGetY);
+          return 2;
+        }else{
+          return 0;
+        }
+      }else {
+        if(!this.isRestricted()){
+          this.selectedSalesBuyXGetYList.add(salesBuyXGetY);
+          return 2;
+        }else {
+          return 0;
+        }
+
+      }
+
+    }
 
   }
 
@@ -86,21 +100,34 @@ class CartItem{
   }
 
   addSalesDiscount(SalesDiscount salesDiscount){
-    if(this.isRestricted()){
-      return 0;
-    }else{
-      bool isAdded = false;
-      for(int i = 0 ; i < this.selectedSalesDiscountList.length ; i ++){
-        if(this.selectedSalesDiscountList[i].id == salesDiscount.id){
-          isAdded = true;
-          return 1;
-        }
-      }
-      if(!isAdded){
-        this.selectedSalesDiscountList.add(salesDiscount);
-        return 2;
+    bool isAdded = false;
+    for(int i = 0 ; i < this.selectedSalesDiscountList.length ; i ++){
+      if(this.selectedSalesDiscountList[i].id == salesDiscount.id){
+        isAdded = true;
+        return 1;
       }
     }
+    if(!isAdded){
+      if(salesDiscount.restrictedOne){
+        if(this.isEmpty()){
+          this.selectedSalesDiscountList.add(salesDiscount);
+          return 2;
+        }else {
+          return 0;
+        }
+      }else{
+        if(!this.isRestricted()){
+          this.selectedSalesDiscountList.add(salesDiscount);
+          return 2;
+        }else{
+          return 0;
+        }
+
+
+      }
+      return 2;
+    }
+
   }
 
   removeSalesDiscount(SalesDiscount salesDiscount){
@@ -114,21 +141,29 @@ class CartItem{
 
 
   addSalesDiscountRate(SalesDiscountRate salesDiscountRate){
-    if(this.isRestricted()){
-      return 0;
-    }else{
-      bool isAdded = false;
-      for(int i = 0 ; i < this.selectedSalesDiscountRateList.length ; i ++){
-        if(this.selectedSalesDiscountRateList[i].id == salesDiscountRate.id){
-          isAdded = true;
-          return 1;
+    bool isAdded = false;
+    for(int i = 0 ; i < this.selectedSalesDiscountRateList.length ; i ++){
+      if(this.selectedSalesDiscountRateList[i].id == salesDiscountRate.id){
+        isAdded = true;
+        return 1;
+      }
+    }
+    if(!isAdded){
+      if(salesDiscountRate.restrictedOne){
+        if(this.isEmpty()){
+          this.selectedSalesDiscountRateList.add(salesDiscountRate);
+          return 2;
+        } else {
+          return 0;
+        }
+      }else{
+        if(!this.isRestricted()){
+          this.selectedSalesDiscountRateList.add(salesDiscountRate);
+          return 2;
+        }else{
+          return 0;
         }
       }
-      if(!isAdded){
-        this.selectedSalesDiscountRateList.add(salesDiscountRate);
-        return 2;
-      }
-
     }
 
   }
@@ -143,24 +178,33 @@ class CartItem{
   }
 
   addSalesSpecialPrice(SalesSpecialPrice salesSpecialPrice){
-    if(this.isRestricted()){
-      return 0;
 
-    }else{
-      bool isAdded = false;
-      for(int i = 0 ; i < this.selectedSalesSpecialPriceList.length ; i ++){
-        if(this.selectedSalesSpecialPriceList[i].id == salesSpecialPrice.id){
-          isAdded = true;
-          return 1;
-        }
+    bool isAdded = false;
+    for(int i = 0 ; i < this.selectedSalesSpecialPriceList.length ; i ++){
+      if(this.selectedSalesSpecialPriceList[i].id == salesSpecialPrice.id){
+        isAdded = true;
+        return 1;
       }
-      if(!isAdded){
-        this.selectedSalesSpecialPriceList.add(salesSpecialPrice);
-        return 2;
+    }
+    if(!isAdded){
+      if(salesSpecialPrice.restrictedOne){
+        if(this.isEmpty()){
+          this.selectedSalesSpecialPriceList.add(salesSpecialPrice);
+          return 2;
+        }else {
+          return 0;
+        }
+      }else {
+        if(!this.isRestricted()){
+          this.selectedSalesSpecialPriceList.add(salesSpecialPrice);
+          return 2;
+        }else {
+          return 0;
+        }
+
       }
 
     }
-
   }
   removeSpecialPrice(SalesSpecialPrice salesSpecialPrice){
     for(int i = 0 ; i < this.selectedSalesSpecialPriceList.length ; i ++){
@@ -192,6 +236,7 @@ class CartItem{
   }
 
   bool isRestricted(){
+    print("isRestricted????");
     for(int i = 0 ; i < this.selectedSalesDiscountRateList.length ; i ++){
       if(this.selectedSalesDiscountRateList[i].restrictedOne){
         return true;
@@ -212,6 +257,25 @@ class CartItem{
         return true;
       }
     }
+    print("isRestricted = false");
     return false;
+  }
+
+  bool isEmpty(){
+    if(this.selectedSalesSpecialPriceList.length > 0 ||
+    this.selectedSalesBuyXGetYList.length >  0 ||
+    this.selectedSalesDiscountList.length > 0 ||
+    this.selectedSalesDiscountRateList.length > 0 ){
+      return false;
+    }
+    return true;
+  }
+
+  bool haveSales(){
+    if(this.product.salesBuyXGetYList.length > 0 ||this.product.salesDiscountList.length > 0 || this.product.salesSpecialPriceList.length > 0 || this.product.salesSpecialPriceList.length > 0 ){
+      return true;
+    }else{
+      return false;
+    }
   }
 }

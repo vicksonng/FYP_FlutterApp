@@ -3,14 +3,15 @@ import 'package:numberpicker/numberpicker.dart';
 import 'dart:async';
 
 class QuantityPicker extends StatefulWidget {
-  num initQty;
+  int initQty;
   Function(int) callback;
-  QuantityPicker(this.initQty, this.callback);
+  bool update= false;
+  QuantityPicker(this.initQty, this.callback, this.update);
+
 
   @override
 //  _QuantityPickerState createState() => new _QuantityPickerState(this.initQty);
   _QuantityPickerState createState() => new _QuantityPickerState();
-
 
 }
 
@@ -23,6 +24,8 @@ class _QuantityPickerState extends State<QuantityPicker> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("_itemCount");
+    print(_itemCount.toString());
     _itemCount = widget.initQty;
   }
 
@@ -58,6 +61,18 @@ class _QuantityPickerState extends State<QuantityPicker> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.update){
+      _itemCount = widget.initQty;
+      widget.update = false;
+    }
+//    _itemCount = widget.initQty;
+//    this.initState();
+    print("+++++++");
+    print("initNumber");
+    print(_itemCount.toString());
+    print("+++++++");
+
+
     integerNumberPicker = new NumberPicker.integer(
       initialValue: _itemCount,
       minValue: 0,

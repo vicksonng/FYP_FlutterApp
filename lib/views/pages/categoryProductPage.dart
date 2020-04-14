@@ -41,7 +41,7 @@ class _CategoryProductPageState extends State<CategoryProductPage>{
 //          fit: BoxFit.cover,
               child: GridTile(
                 child: FittedBox(
-                  child: Image.asset(widget.category.categoryImgPath),
+                  child: Image.network(widget.category.categoryImgPath),
                   fit: BoxFit.cover,
                 ),
                 footer: Container(
@@ -63,19 +63,18 @@ class _CategoryProductPageState extends State<CategoryProductPage>{
 
 
           Container(
-            child: ProductsListComponent(widget.category.productType),
             height: 400,
+            child: ProductsListComponent(widget.category.productType),
+//            FutureBuilder(
+//                future: Provider.of<ProductListViewModel>(context, listen: false).getProductsType(widget.category.categoryName),
+//                builder: _futureCategoryList
+//
+//            )
 
           )
 
-
-
-
         ],
       )
-
-
     );
-
   }
 }

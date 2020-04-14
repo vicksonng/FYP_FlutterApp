@@ -158,7 +158,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       "數量： ",
                       style: TextStyle(color: Colors.grey, fontSize: 15, decoration: null, fontWeight: FontWeight.bold),
                     ),
-                    new QuantityPicker(0, callback),
+                    new QuantityPicker(0, callback, false),
                     Expanded(
                       child: MaterialButton(
                         onPressed: (){
@@ -218,7 +218,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               )
             ),
             Container(
-              height: 220,
+              height: 250,
               child: new RecommendedListJaccardComponent(widget.product.id)
 //              child: new Products('ALL')
             )
@@ -231,52 +231,52 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
 
 //  RecommendationList ?????????????????
- class RecommendationList extends StatefulWidget {
-   @override
-   _RecommendationListState createState() => _RecommendationListState();
- }
- class _RecommendationListState extends State<RecommendationList>{
-   var recommendation_list = [
-     {
-       "name" : "鴻福堂涼茶",
-       "picture": "image/鴻福堂涼茶.jpg",
-       "oldPrice": 20,
-       "price": 10,
-       "benefits": "清熱解毒、化濕利尿、健胃消滯",
-       "ingredients": "純水、蔗糖、相思藤、菊花、雞骨草、水翁花、布渣葉、金錢草、甘草、羅漢果"
-     },
-     {
-       "name" : "雞骨草",
-       "picture": "image/雞骨草.jpg",
-       "oldPrice": 20,
-       "price": 15,
-       "benefits": "清熱解毒、舒肝止痛、袪痰止咳",
-       "ingredients": "純水、蔗糖、雞骨草、蜜棗、甘草、羅漢果",
-     },
-
-   ];
-   @override
-   Widget build(BuildContext context) {
-     return GridView.builder(
-         itemCount: recommendation_list.length,
-         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-           crossAxisCount: 2,
-
-         ),
-//         itemBuilder: (BuildContext context, int index){
-//           return ProductWidget(
-//               productName: recommendation_list[index]['name'],
-//               picture: recommendation_list[index]['picture'],
-//               oldPrice: recommendation_list[index]['oldPrice'],
-//               price: recommendation_list[index]['price'],
-//               benefits: recommendation_list[index]['benefits'],
-//               ingredients: recommendation_list[index]['ingredients']
-//           );
-//         }
-     );
-   }
-
- }
+// class RecommendationList extends StatefulWidget {
+//   @override
+//   _RecommendationListState createState() => _RecommendationListState();
+// }
+// class _RecommendationListState extends State<RecommendationList>{
+//   var recommendation_list = [
+//     {
+//       "name" : "鴻福堂涼茶",
+//       "picture": "image/鴻福堂涼茶.jpg",
+//       "oldPrice": 20,
+//       "price": 10,
+//       "benefits": "清熱解毒、化濕利尿、健胃消滯",
+//       "ingredients": "純水、蔗糖、相思藤、菊花、雞骨草、水翁花、布渣葉、金錢草、甘草、羅漢果"
+//     },
+//     {
+//       "name" : "雞骨草",
+//       "picture": "image/雞骨草.jpg",
+//       "oldPrice": 20,
+//       "price": 15,
+//       "benefits": "清熱解毒、舒肝止痛、袪痰止咳",
+//       "ingredients": "純水、蔗糖、雞骨草、蜜棗、甘草、羅漢果",
+//     },
+//
+//   ];
+//   @override
+//   Widget build(BuildContext context) {
+//     return GridView.builder(
+//         itemCount: recommendation_list.length,
+//         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+//           crossAxisCount: 2,
+//
+//         ),
+////         itemBuilder: (BuildContext context, int index){
+////           return ProductWidget(
+////               productName: recommendation_list[index]['name'],
+////               picture: recommendation_list[index]['picture'],
+////               oldPrice: recommendation_list[index]['oldPrice'],
+////               price: recommendation_list[index]['price'],
+////               benefits: recommendation_list[index]['benefits'],
+////               ingredients: recommendation_list[index]['ingredients']
+////           );
+////         }
+//     );
+//   }
+//
+// }
 
  class SalesWidget extends StatelessWidget{
     Product product;

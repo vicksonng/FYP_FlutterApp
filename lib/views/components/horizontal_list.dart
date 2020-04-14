@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/dialogflow/dialog_flow.dart';
 import 'package:untitled/models/recommendations.dart';
+import 'package:untitled/view_models/userViewModel.dart';
 import 'package:untitled/views/pages/categoriesPage.dart';
+import 'package:untitled/views/pages/categoryPage.dart';
 import 'package:untitled/views/pages/loginPage.dart';
+import 'package:untitled/views/pages/promotionPage.dart';
 import 'package:untitled/views/pages/recommendationsPage.dart';
+import 'package:untitled/views/pages/userPage.dart';
 
 class HorizontalList extends StatelessWidget {
   @override
@@ -21,23 +26,23 @@ class HorizontalList extends StatelessWidget {
           Category(
             location: 'image/sale.png' ,
             caption: '推廣優惠',
-            path: CategoriesPage(),
+            path: PromotionPage(),
           ),
           Category(
             location: 'image/food.png' ,
             caption: '產品目錄',
-            path: CategoriesPage(),
+            path: CategoryPage(),
           ),
           Category(
             location: 'image/member.png' ,
             caption: '會員中心',
-            path: LoginPage(),
+            path: Provider.of<UserViewModel>(context, listen: false).userID == 1 ? LoginPage() : UserPage() ,
           ),
-          Category(
-           location: 'image/recommendation.png' ,
-            caption: 'Recommendation',
-            path: CategoriesPage(),
-          ),
+//          Category(
+//           location: 'image/recommendation.png' ,
+//            caption: 'Recommendation',
+//            path: CategoriesPage(),
+//          ),
 
         ],
       ),

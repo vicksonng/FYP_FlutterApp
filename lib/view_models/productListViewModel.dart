@@ -34,6 +34,7 @@ class ProductListViewModel extends ChangeNotifier {
     await this.fetchSalesDiscount();
     await this.fetchSalesSpecialPrice();
     await this.fetchSalesDiscountRate();
+    notifyListeners();
 
   }
 
@@ -66,6 +67,7 @@ class ProductListViewModel extends ChangeNotifier {
         }
       }
     }
+    notifyListeners();
   }
 
   fetchSalesDiscount() async {
@@ -94,6 +96,7 @@ class ProductListViewModel extends ChangeNotifier {
         }
       }
     }
+    notifyListeners();
   }
   fetchSalesDiscountRate() async {
     String url = Constant.salesDiscountRateUrl;
@@ -123,6 +126,7 @@ class ProductListViewModel extends ChangeNotifier {
         }
       }
     }
+    notifyListeners();
   }
   fetchSalesSpecialPrice() async {
     String url = Constant.salesSpecialPriceUrl;
@@ -151,6 +155,7 @@ class ProductListViewModel extends ChangeNotifier {
         }
       }
     }
+    notifyListeners();
   }
 
   Future<List<Product>> getProductsType(String productType) async {

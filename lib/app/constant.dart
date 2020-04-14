@@ -4,7 +4,7 @@ class Constant {
   static String urlPrefixTesting = 'http://localhost:1337';
   static String urlPrefixProduction = 'https://fypsailsjs.herokuapp.com';
 
-  static String loginUrl = url("user/loginMobile");
+  static String loginUrl = url("/user/loginMobile");
   static String getProductUrl = url("/products/category/ALL");
   static String recommendationsUbcfUrl = url("/products/getRecommendationsUBCF/");
   static String recommendationsJaccardUrl = url("/products/getRecommendationsJaccard/");
@@ -15,6 +15,10 @@ class Constant {
   static String salesDiscountUrl = url("/sales/discount");
   static String salesSpecialPriceUrl = url("/sales/specialPrice");
   static String salesDiscountRateUrl = url("/sales/discountRate");
+  static String userAddValueUrl = url("/user/addStoredValue");
+  static String categoryListUrl = url("/category/list");
+  static String getPromotionUrl = url("/promotion");
+  static String registerUrl = url("/user/register");
 
 
   static String url(String suffix){

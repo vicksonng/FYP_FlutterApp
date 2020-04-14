@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/view_models/userViewModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:untitled/views/pages/registrationPage.dart';
 
 class LoginPage extends StatelessWidget {
 
@@ -54,42 +55,81 @@ class LoginPage extends StatelessWidget {
         ],
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          TextField(
-            controller: accountFieldController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: '帳號',
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Card(
+                  elevation: 5,
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
+                    child:  Column(
+                      children: <Widget> [
+                        Padding(
+                          child: Image.network("https://www.hungfooktong.com/wp-content/uploads/2018/08/hft_newlogo.png"),
+                          padding: EdgeInsets.only(top:20, bottom : 20)
+
+                        ),
+
+                        TextField(
+                          controller: accountFieldController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: '帳號',
+                          ),
+                        ),
+                        Container(
+                          height: 5
+                        ),
+                        TextField(
+                          controller: passwordFieldController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: '密碼',
+                          ),
+                        ),
+                        MaterialButton(
+                          color: Colors.lightGreen,
+                          onPressed: () async {
+                            print(".....");
+                            bool isValid = await Provider.of<UserViewModel>(
+                                context, listen: false).login(
+                                accountFieldController.text, passwordFieldController.text);
+                            print(isValid);
+                            _showDialog(isValid);
+                          },
+                          child: Text(
+                            "登入",
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    )
+
+                  )
+
+
+              )
             ),
-          ),
-          TextField(
-            controller: passwordFieldController,
-            obscureText: true,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: '密碼',
-            ),
-          ),
-          MaterialButton(
-            color: Colors.lightGreen,
-            onPressed: () async {
-              print(".....");
-              bool isValid = await Provider.of<UserViewModel>(
-                  context, listen: false).login(
-                  accountFieldController.text, passwordFieldController.text);
-              print(isValid);
-              _showDialog(isValid);
-            },
-            child: Text(
-              "登入",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-    );
+            FlatButton(
+              child: Text("如沒有帳號，可按此進行會員注冊"),
+              onPressed: (){
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (context) =>
+                    new RegistrationPage()
+                ));
+              }
+              ,
+
+            )
+
+      ],
+
+    )
+                  );
+
 
   }
 

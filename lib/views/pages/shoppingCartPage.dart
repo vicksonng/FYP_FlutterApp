@@ -43,6 +43,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   Widget build(BuildContext context) {
     final cartListVM = Provider.of<CartListViewModel>(context);
 
+    print("Redraw ......");
+
     List<CartItem> cartItems = cartListVM.cartList;
 
     void _showDialog(int result) {
@@ -91,8 +93,12 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               itemCount: cartItems.length,
               itemBuilder: (context, index){
                 CartItem cartItem = cartItems[index];
+                print(">>>>>>>>");
+                print(cartItems[index].product.productName);
+                print(cartItems[index].qty);
+                print(">>>>>>>>");
                 callback(newQty){
-                  cartListVM.setQty(index, newQty);
+//                  cartListVM.setQty(index, newQty);
 //                  setState(() {
 ////                    cartItems[index].qty = newQty;
 ////                    _calTotal();
@@ -112,6 +118,11 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                   onPressed: (){
                                     print(cartItems[index].product.id);
                                     cartListVM.removeItem(cartItems[index].product.id);
+//                                    dispose();
+                                    setState(() {
+                                        print("redraw");
+//                                      cartItems = cartListVM.cartList;
+                                    });
                                   },
                                 )
                             ),
@@ -132,11 +143,11 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
 
                                 )
                             ),
-                            Container(
+                            new Container(
                                 color: Colors.lightGreen,
                                 child: Transform.scale(
                                     scale: 1,
-                                    child: new QuantityPicker(cartItems[index].qty, callback)
+                                    child: new QuantityPicker(cartItems[index].qty, callback, true)
                                 )
 
                             ),
@@ -144,6 +155,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                           ],
                         ),
                       ),
+                      (cartItems[index].haveSales())?
                       ListTile(
                         title: Text(
                               "可用優惠：",
@@ -171,7 +183,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                           ),
                         )
 
-                      ),
+                      ): Container(),
 //                      Row(
 //                        children: <Widget>[
 //                          Container(

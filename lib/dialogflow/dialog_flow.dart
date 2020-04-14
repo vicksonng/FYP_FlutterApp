@@ -24,6 +24,8 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
 //  Function(String) callback;
 
   callback(String text) {
+
+    print("in callback");
     print(text);
     _submitQuery(text);
   }
@@ -75,15 +77,24 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
     print(response.getMessage());
     print(response.getListMessage());
     var resListMessage = response.getListMessage();
-    print(resListMessage);
-    for(var i = 0 ; i <  resListMessage.length ; i++) {
-      Facts message2 = castMessage(resListMessage[i]);
-      print(message2.imgURL);
-      print(message2.buttonText.runtimeType);
-      setState(() {
-        messageList.insert(0, message2);
+
+    Facts message = castAgentResponseMessage(resListMessage);
+//    print("xxx");
+//    print(resListMessage[0]);
+//    List<String> messages = [];
+//    for(var i = 0 ; i <  resListMessage.length ; i++) {
+//      messages.add(resListMessage[i]['Text']['Text']);
+//
+////      Facts message = castMessage(resListMessage[i]);
+////      print(message2.imgURL);
+////      print(message2.buttonText.runtimeType);
+////      setState(() {
+////        messageList.insert(0, message);
+////      });
+//    }
+    setState(() {
+        messageList.insert(0, message);
       });
-    }
 //    response.getListMessage()
 //    var card = CardDialogflow(response.getListMessage()[0]).title;
 //    print(card);
@@ -97,60 +108,92 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
 //      messageList.insert(0, message);
 //    });
   }
-  Facts castMessage(resListMessage) {
-    if (resListMessage["text"] != null) {
-      return new Facts(
-          title: "",
-          subtitle: "",
-          text: resListMessage["text"]["text"][0].toString(),
-          name: "小幫手",
-          type: false,
-          imgURL: "",
-          buttonText: "",
-          messageType: 0,
-          callback: callback
-      );
-    } else{ // Card
-      var card = resListMessage["card"];
+  castAgentResponseMessage(resListMessage) {
+    String messageType = resListMessage[0]['text']['text'][0];
+    print("messageType : "+resListMessage[0]['text']['text'][0]);
+//    String messageType = resListMessage[0];
 
-      if( card["title"] == "product"){
-        return new Facts(
-            text: "",
-            name: "小幫手",
-            type: false,
-            title: card["title"],
-            subtitle: card["subtitle"],
-            imgURL: card["imageUri"],
-            buttonText: card["buttons"][0]["text"],
-            messageType: 2,
-            callback: callback
-        );
-
-      }else{
-        return new Facts(
-            text: "",
-            name: "小幫手",
-            type: false,
-            title: card["title"],
-            subtitle: card["subtitle"],
-            imgURL: card["imageUri"],
-            buttonText: card["buttons"][0]["text"],
-            messageType: 1,
-            callback: callback
-        );
-
-      }
-
+    List<String> messages = [];
+    for (int i = 1; i < resListMessage.length; i++) {
+      print("messages: "+ resListMessage[i]['text']['text'][0]);
+      messages.add(resListMessage[i]['text']['text'][0]);
     }
+    return new Facts(messageType, messages, "小幫手", false, this.callback);
   }
+
+//    return new Facts(
+//      messageType: messageType,
+//      messages: messages,
+//      name: "小幫手",
+//      type: false,
+//      callback, this.callback
+//    );
+//  }
+
+  // useful casting function....
+//  Facts castMessage(resListMessage) {
+//    if (resListMessage["text"] != null) {
+//      if(resListMessage["text"]["text"][0].toString() == "")
+//      return new Facts(
+//          title: "",
+//          subtitle: "",
+//          text: resListMessage["text"]["text"][0].toString(),
+//          name: "小幫手",
+//          type: false,
+//          imgURL: "",
+//          buttonText: "",
+//          messageType: 0,
+//          callback: callback
+//      );
+//    } else{ // Card
+//      var card = resListMessage["card"];
+//
+//      if( card["title"] == "product"){
+//        return new Facts(
+//            text: "",
+//            name: "小幫手",
+//            type: false,
+//            title: card["title"],
+//            subtitle: card["subtitle"],
+//            imgURL: card["imageUri"],
+//            buttonText: card["buttons"][0]["text"],
+//            messageType: 2,
+//            callback: callback
+//        );
+//
+//      }else{
+//        return new Facts(
+//            text: "",
+//            name: "小幫手",
+//            type: false,
+//            title: card["title"],
+//            subtitle: card["subtitle"],
+//            imgURL: card["imageUri"],
+//            buttonText: card["buttons"][0]["text"],
+//            messageType: 1,
+//            callback: callback
+//        );
+//
+//      }
+//
+//    }
+//  }
 
   void _submitQuery(String text) {
     _textController.clear();
-    Facts message = new Facts(
-      text: text,
-      name: "User",
-      type: true,
-    );
+    print("in _submitQuery");
+    print(text);
+    String messageType = "userMessage";
+    List<String> messages = [];
+    messages.add(text);
+    print(".....");
+    print(messages[0]);
+//    Facts message = new Facts(
+//      text: text,
+//      name: "User",
+//      type: true,
+//    );
+    Facts message = Facts(messageType, messages, "小幫手", true, this.callback);
     setState(() {
       messageList.insert(0, message);
     });

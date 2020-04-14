@@ -16,21 +16,33 @@ class RecommendationsMessage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     // TODO: implement build
+//    return Container(
+//      height: 400,
+//      width: 400,
     return Container(
-      height: 400,
-      child: Swiper(
-        itemBuilder: (BuildContext context, int index) {
-          return new SingleProductRecommendations(this.products[index]);
-        },
-        itemCount: this.products.length,
-        viewportFraction: 0.8,
-        scale: 0.4,
-//        containerWidth: 300,
-//        itemWidth: 200,
-//        containerHeight: 300,
-      )
+      height: 470,
+      child:  Column(
+        children: <Widget>[
+          ListTile(
+            title: Text("小幫手誠意為你推薦"),
+          ),
+          Flexible(
+              child: Swiper(
+                itemBuilder: (BuildContext context, int index) {
+                  return new SingleProductRecommendations(this.products[index]);
+                },
+                itemCount: this.products.length,
+                viewportFraction: 0.8,
+                scale: 0.4,
+              )
+          ),
 
+        ],
+      )
     );
+//
+//
+//    );
   }
 }
 
@@ -40,7 +52,6 @@ class SingleProductRecommendations extends StatelessWidget{
   int quantity = 0;
   Function callback;
   SingleProductRecommendations(this.product);
-
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +64,11 @@ class SingleProductRecommendations extends StatelessWidget{
     return new Container(
 
       child:
-        Column(
+        ListView(
+          shrinkWrap: true,
           children: <Widget>[
+
+            
             Container(
               height: 250,
              child:  Stack(
@@ -125,7 +139,7 @@ class SingleProductRecommendations extends StatelessWidget{
               children: <Widget>[
                 new Row(
                   children: <Widget>[
-                    new QuantityPicker(0, callback),
+                    new QuantityPicker(0, callback, false),
                     Expanded(
                         child:
                         MaterialButton(
