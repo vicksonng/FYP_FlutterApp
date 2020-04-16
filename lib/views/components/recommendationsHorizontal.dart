@@ -90,6 +90,14 @@ class _RecommendationsHorizontalComponentState extends State<RecommendationsHori
                           padding: EdgeInsets.all(5),
                         )
                     ),
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          child: Text(widget.recommendations.recommendationDesc, style: TextStyle(color: Colors.black54),),
+                          padding: EdgeInsets.all(5),
+                        )
+                    ),
+
                     Container(
                       height: 250,
                       child: ListView.builder(
@@ -137,6 +145,7 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var userVM = Provider.of<UserViewModel>(context);
 
     Widget crown;
     if(order == 0){
@@ -149,38 +158,38 @@ class ProductWidget extends StatelessWidget {
       crown = null;
     }
 
-    Future<bool> addSearchHistory() async {
-//      var url = 'http://localhost:1337/user/searched';
-//      var url = 'https://fypsailsjs.herokuapp.com/user/searched';
-      String urlSuffix = "/user/searched";
-      String urlPrefix = Constant.getUrlPrefix();
-      String url = urlPrefix + urlSuffix;
-      print(url);
-      print(this.product.id);
-//    var response = await http.get(url);
-//    print(jsonDecode(response.body));
-//    Map<String, String> headers = {"Content-type": "application/json"};
-      Map data = {
-        "userID" : Provider.of<UserViewModel>(context, listen: false).userID,
-        "productID" : this.product.id,
-      };
-      var json = jsonEncode(data);
-      var  response = await http.post(
-          url,
-          headers: {"Content-Type": "application/json"},
-          body: json
-      );
-      // check the status code for the result
-      int statusCode = response.statusCode;
-      print(statusCode);
-      var body = jsonDecode(response.body);
-      print(body);
-      if(statusCode == 200){
-        return true;
-      }else {
-        return false;
-      }
-    }
+//    Future<bool> addSearchHistory() async {
+////      var url = 'http://localhost:1337/user/searched';
+////      var url = 'https://fypsailsjs.herokuapp.com/user/searched';
+//      String urlSuffix = "/user/searched";
+//      String urlPrefix = Constant.getUrlPrefix();
+//      String url = urlPrefix + urlSuffix;
+//      print(url);
+//      print(this.product.id);
+////    var response = await http.get(url);
+////    print(jsonDecode(response.body));
+////    Map<String, String> headers = {"Content-type": "application/json"};
+//      Map data = {
+//        "userID" : Provider.of<UserViewModel>(context, listen: false).userID,
+//        "productID" : this.product.id,
+//      };
+//      var json = jsonEncode(data);
+//      var  response = await http.post(
+//          url,
+//          headers: {"Content-Type": "application/json"},
+//          body: json
+//      );
+//      // check the status code for the result
+//      int statusCode = response.statusCode;
+//      print(statusCode);
+//      var body = jsonDecode(response.body);
+//      print(body);
+//      if(statusCode == 200){
+//        return true;
+//      }else {
+//        return false;
+//      }
+//    }
 
     return Container(
         width: 200,
@@ -193,7 +202,7 @@ class ProductWidget extends StatelessWidget {
                             builder: (context) =>
                             new ProductDetailsPage(product)
                         ));
-                        var response = await addSearchHistory();
+                        var response = await userVM.addSearchHistory(product.id);
                         print(response);
                         print("added 2");
                       },

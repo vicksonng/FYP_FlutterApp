@@ -36,7 +36,7 @@ class HorizontalList extends StatelessWidget {
           Category(
             location: 'image/member.png' ,
             caption: '會員中心',
-            path: Provider.of<UserViewModel>(context, listen: false).userID == 1 ? LoginPage() : UserPage() ,
+            path: Provider.of<UserViewModel>(context, listen: true).role =="visitor" ? LoginPage() : UserPage() ,
           ),
 //          Category(
 //           location: 'image/recommendation.png' ,

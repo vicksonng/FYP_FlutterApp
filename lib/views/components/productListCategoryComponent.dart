@@ -11,25 +11,19 @@ import 'dart:convert';
 import 'package:untitled/models/product.dart';
 import 'package:untitled/app/app.dart';
 
-class ProductsListComponent extends StatefulWidget {
+class ProductsListCategoryComponent extends StatefulWidget {
   final String productType;
 
-  ProductsListComponent(this.productType);
+  ProductsListCategoryComponent(this.productType);
 //  List<Product> product_list;
 
   @override
-  _ProductsListComponentState createState() => _ProductsListComponentState();
+  _ProductsListCategoryComponentState createState() => _ProductsListCategoryComponentState();
 }
 
 
-class _ProductsListComponentState extends State<ProductsListComponent> {
-  Future<List<Product>> product_list;
+class _ProductsListCategoryComponentState extends State<ProductsListCategoryComponent> {
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
   @override
   Widget _futureProductsList(BuildContext context, AsyncSnapshot snap) {
     switch (snap.connectionState) {
@@ -53,12 +47,11 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
           print("done");
           print(snap.data);
           if (snap.data == null) {
-            print("Data is null ........ ");
             return Text("No products");
           } else {
-//            List<Product> products = Provider.of<ProductListViewModel>(context, listen: false).getProductsCategory(widget.productType);
+            List<Product> products = Provider.of<ProductListViewModel>(context, listen: false).getProductsCategory(widget.productType);
             return GridView.builder(
-                itemCount: snap.data.length,
+                itemCount: products.length,
                 gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio:
@@ -66,7 +59,7 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   return ProductWidget(
-                      product: snap.data[index]
+                      product: products[index]
                   );
                 }
 //                itemCount: snap.data.length,
@@ -90,17 +83,17 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
   }
 
   Widget build(BuildContext context) {
-    print("building productList Component");
     return Container(
-      child: FutureBuilder(
-        builder: _futureProductsList,
+        child: FutureBuilder(
+          builder: _futureProductsList,
 //        future: getProducts(widget.productType)
-//        future: Provider.of<ProductListViewModel>(context, listen: false).getProductsType(widget.productType),
-        future: Provider.of<ProductListViewModel>(context, listen: false).fetchProducts(),
-      )
+          future: Provider.of<ProductListViewModel>(context, listen: false).getProductsType(widget.productType),
+//        future: Provider.of<ProductListViewModel>(context, listen: false).fetchProducts(),
+
+        )
     );
 
-  //return Container();
+    //return Container();
   }
 }
 
@@ -153,69 +146,70 @@ class ProductWidget extends StatelessWidget {
 //      }
 //    }
     return Container(
-      height: 280,
-      child: Card(
-          child: Hero(
-            tag: product.productName,
-            child: Material(
-              child: InkWell(
-                onTap: () async {
-                  Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (context) =>
-                      new ProductDetailsPage(product)
-                  ));
-                  var response = await userVM.addSearchHistory(product.id);
-                  print(response);
-                  print("added");
+        height: 280,
+        child: Card(
+            child: Hero(
+              tag: product.productName,
+              child: Material(
+                child: InkWell(
+                  onTap: () async {
+                    Navigator.of(context).push(new MaterialPageRoute(
+                        builder: (context) =>
+                        new ProductDetailsPage(product)
+                    ));
+                    var response = await userVM.addSearchHistory(product.id);
+                    print(response);
+                    print("added");
 
-                },
+                  },
 
-                child: GridTile(
-                    footer: Container(
-                        padding: EdgeInsets.all(5.0),
-                        color: Colors.white,
-                        child: Row(
-                          children: <Widget>[
-                            Text(product.productName,
-                              style: TextStyle(color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Spacer(),
-                            Text(
-                              "\$"+product.currentPrice.toString(),
-                              style: TextStyle(
-                                  color: Colors.red, fontWeight: FontWeight.w800),
-                            ),
+                  child: GridTile(
+                      footer: Container(
+                          padding: EdgeInsets.all(5.0),
+                          color: Colors.white,
+                          child: Row(
+                            children: <Widget>[
+                              Text(product.productName,
+                                style: TextStyle(color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Spacer(),
+                              Text(
+                                "\$"+product.currentPrice.toString(),
+                                style: TextStyle(
+                                    color: Colors.red, fontWeight: FontWeight.w800),
+                              ),
 
-                          ],
-                        )
-                    ),
-                    child: Stack(
-                      children: <Widget>[
-                        Image.network(product.picture),
-                        isSales? new Container(
-                            height: 80,
-                            child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Image.asset("image/sales.png")
-                            )
-                        ): Container()
-                      ],
+                            ],
+                          )
+                      ),
+                      child: Stack(
+                        children: <Widget>[
+                          Image.network(product.picture),
+                          isSales? new Container(
+                              height: 80,
+                              child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Image.asset("image/sales.png")
+                              )
+                          ): Container()
+                        ],
 
-                    )
+                      )
 //                    product.picture,
 //                    fit: BoxFit.cover,
 //                  )
+                  ),
                 ),
               ),
-            ),
 
-          )
-      )
+            )
+        )
     );
 
   }
 }
+
 
 
 

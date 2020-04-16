@@ -16,7 +16,8 @@ class ProductListViewModel extends ChangeNotifier {
 
   List<Product> products = List<Product>();
 
-  Future<void> fetchProducts() async {
+  Future<List<Product>> fetchProducts() async {
+    print("In FetchProducts");
     String url = Constant.getProductUrl;
     print(url);
     var response = await http.get(url);
@@ -30,16 +31,22 @@ class ProductListViewModel extends ChangeNotifier {
 
     this.products = product_list;
 
+
     await this.fetchSalesBuyXGetY();
     await this.fetchSalesDiscount();
     await this.fetchSalesSpecialPrice();
     await this.fetchSalesDiscountRate();
-    notifyListeners();
+    print("Print fetchedProducts ??????????");
+    print(this.products);
+//    notifyListeners();
+    return this.products;
+
 
   }
 
   fetchSalesBuyXGetY() async {
     String url = Constant.salesBuyXGetYUrl;
+    print(url);
     var response = await http.get(url);
     var result = jsonDecode(response.body);
     print(response.body);
@@ -51,7 +58,7 @@ class ProductListViewModel extends ChangeNotifier {
       print(sales_list[0].productID);
     }
     for(int i = 0 ; i < sales_list.length ; i++){
-      for(int j = 0 ; j < this.products.length ; i ++){
+      for(int j = 0 ; j < this.products.length ; j ++){
         if(sales_list[i].productID == this.products[j].id){
           var isExist = false;
           for(int k = 0 ; k < this.products[j].salesBuyXGetYList.length ; k++){
@@ -67,11 +74,13 @@ class ProductListViewModel extends ChangeNotifier {
         }
       }
     }
-    notifyListeners();
+//    notifyListeners();
   }
 
   fetchSalesDiscount() async {
     String url = Constant.salesDiscountUrl;
+    print(url);
+
     var response = await http.get(url);
     var result = jsonDecode(response.body);
     List<dynamic> sales_list_dynamic = result.map((i) => SalesDiscount.fromJson(i)).toList();
@@ -96,10 +105,12 @@ class ProductListViewModel extends ChangeNotifier {
         }
       }
     }
-    notifyListeners();
+//    notifyListeners();
   }
   fetchSalesDiscountRate() async {
     String url = Constant.salesDiscountRateUrl;
+    print(url);
+
     var response = await http.get(url);
     var result = jsonDecode(response.body);
     List<dynamic> sales_list_dynamic = result.map((i) => SalesDiscountRate.fromJson(i)).toList();
@@ -126,10 +137,12 @@ class ProductListViewModel extends ChangeNotifier {
         }
       }
     }
-    notifyListeners();
+//    notifyListeners();
   }
   fetchSalesSpecialPrice() async {
     String url = Constant.salesSpecialPriceUrl;
+    print(url);
+
     var response = await http.get(url);
     var result = jsonDecode(response.body);
     List<dynamic> sales_list_dynamic = result.map((i) => SalesSpecialPrice.fromJson(i)).toList();
@@ -155,10 +168,11 @@ class ProductListViewModel extends ChangeNotifier {
         }
       }
     }
-    notifyListeners();
+//    notifyListeners();
   }
 
   Future<List<Product>> getProductsType(String productType) async {
+    print(" Get Products Type");
     await this.fetchProducts();
     if(productType == "ALL"){
       print(productType);
@@ -169,10 +183,31 @@ class ProductListViewModel extends ChangeNotifier {
       for(var i = 0 ; i<this.products.length ; i ++){
         if(this.products[i].productType == productType) {
           productList.add(this.products[i]);
+          print("()(()()()()()()()(");
         }
       }
+      print("returneed");
       return productList;
     }
+  }
+
+  List<Product> getProductsCategory(String productType) {
+    if(productType == "ALL"){
+      print(productType);
+      return this.products;
+    }else{
+      print(productType);
+      List<Product> productList = [];
+      for(var i = 0 ; i<this.products.length ; i ++){
+        if(this.products[i].productType == productType) {
+          productList.add(this.products[i]);
+          print("()(()()()()()()()(");
+        }
+      }
+      print("returneed");
+      return productList;
+    }
+
   }
 
   Product getSingleProduct(int productID) {

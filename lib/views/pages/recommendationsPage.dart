@@ -14,11 +14,23 @@ class _RecommendationsPageState extends State<RecommendationsPage>{
 
   @override
   Widget build(BuildContext context) {
-    List<Recommendations> recommendations = [
-      new Recommendations("專屬推介", Constant.recommendationsUbcfUrl + Provider.of<UserViewModel>(context).userID.toString()),
-      new Recommendations("最暢銷商品", Constant.recommendationsTopSalesUrl),
-      new Recommendations("最受注目商品", Constant.recommendationsTopViewUrl)
-    ];
+    var userVM = Provider.of<UserViewModel>(context);
+    List<Recommendations> recommendations = [];
+    if(userVM.userID == 1){
+      recommendations = [
+//        new Recommendations("專屬推介", Constant.recommendationsMessageUBCF, Constant.recommendationsUbcfUrl + Provider.of<UserViewModel>(context).userID.toString()),
+        new Recommendations("最暢銷商品", Constant.recommendationsMessageTopSales, Constant.recommendationsTopSalesUrl),
+        new Recommendations("最受注目商品", Constant.recommendationsMessageTopView, Constant.recommendationsTopViewUrl)
+      ];
+    }else{
+      recommendations = [
+        new Recommendations("專屬推介", Constant.recommendationsMessageUBCF, Constant.recommendationsUbcfUrl + Provider.of<UserViewModel>(context).userID.toString()),
+        new Recommendations("最暢銷商品", Constant.recommendationsMessageTopSales, Constant.recommendationsTopSalesUrl),
+        new Recommendations("最受注目商品", Constant.recommendationsMessageTopView, Constant.recommendationsTopViewUrl)
+      ];
+
+    }
+
     // TODO: implement build
     return Scaffold(
         appBar: new AppBar(

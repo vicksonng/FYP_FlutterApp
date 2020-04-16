@@ -9,11 +9,11 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:untitled/views/pages/productDetailsPage.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
 
-class RecommendationsMessage extends StatelessWidget {
+class ProductListMessage extends StatelessWidget {
 
   final List<Product> products;
 
-  RecommendationsMessage(this.products);
+  ProductListMessage(this.products);
 
   @override
   Widget build(BuildContext context) {
@@ -23,25 +23,25 @@ class RecommendationsMessage extends StatelessWidget {
 //      height: 400,
 //      width: 400,
     return Container(
-      height: 470,
-      child:  Column(
-        children: <Widget>[
-          ListTile(
-            title: Text("小幫手誠意為你推薦"),
-          ),
-          Flexible(
-              child: Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return new SingleProductRecommendations(this.products[index]);
-                },
-                itemCount: this.products.length,
-                viewportFraction: 0.8,
-                scale: 0.4,
-              )
-          ),
+        height: 470,
+        child:  Column(
+          children: <Widget>[
+            ListTile(
+              title: Text("小幫手誠意為你推薦"),
+            ),
+            Flexible(
+                child: Swiper(
+                  itemBuilder: (BuildContext context, int index) {
+                    return new SingleProduct(this.products[index]);
+                  },
+                  itemCount: this.products.length,
+                  viewportFraction: 0.8,
+                  scale: 0.4,
+                )
+            ),
 
-        ],
-      )
+          ],
+        )
     );
 //
 //
@@ -50,12 +50,11 @@ class RecommendationsMessage extends StatelessWidget {
 }
 
 
-class SingleProductRecommendations extends StatelessWidget{
+class SingleProduct extends StatelessWidget{
   Product product;
   int quantity = 0;
   Function callback;
-  SingleProductRecommendations(this.product);
-
+  SingleProduct(this.product);
 
   @override
   Widget build(BuildContext context) {
@@ -86,19 +85,18 @@ class SingleProductRecommendations extends StatelessWidget{
       );
     }
 
-
     // TODO: implement build
     return new Container(
 
-      child:
+        child:
         ListView(
           shrinkWrap: true,
           children: <Widget>[
 
-            
+
             Container(
               height: 250,
-             child:  Stack(
+              child:  Stack(
                   children: <Widget> [
                     Align(
                       alignment: Alignment.center,
@@ -178,6 +176,7 @@ class SingleProductRecommendations extends StatelessWidget{
                             onPressed: (){
                               Provider.of<CartListViewModel>(context, listen: false).addItem(new CartItem(product, this.quantity));
                               _showDialog();
+
                             },
                             child: Text("加入購物車", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)
                         )
@@ -211,7 +210,7 @@ class SingleProductRecommendations extends StatelessWidget{
           ],
         )
     );
-    }
+  }
 
 }
 

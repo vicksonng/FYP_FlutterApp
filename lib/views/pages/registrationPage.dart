@@ -147,7 +147,6 @@ class RegistrationPage extends StatelessWidget {
                                     print(isValid);
                                     if(isValid){
                                       _showDialog(isValid, "註冊成功");
-
                                     }else {
                                       _showDialog(isValid, "會員註冊失敗，請再試一次");
 

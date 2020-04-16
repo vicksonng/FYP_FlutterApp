@@ -42,10 +42,62 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   @override
   Widget build(BuildContext context) {
     final cartListVM = Provider.of<CartListViewModel>(context);
+    final userVM = Provider.of<UserViewModel>(context);
 
     print("Redraw ......");
 
     List<CartItem> cartItems = cartListVM.cartList;
+    void _showLogoutDialog() {
+      // flutter defined function
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // return object of type Dialog
+          return AlertDialog(
+            title: new Text("通知"),
+            content: Text("離開前請登出系統，請問需要登出系統嗎？"),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              new FlatButton(
+                child: new Text("登出"),
+                onPressed: () {
+                  Provider.of<UserViewModel>(context).logout();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      // return object of type Dialog
+                      return AlertDialog(
+                        title: new Text("通知"),
+                        content: Text("已從系統登出，歡迎再次光臨鴻福堂，多謝"),
+                        actions: <Widget>[
+                          // usually buttons at the bottom of the dialog
+                          new FlatButton(
+                            child: new Text("關閉"),
+                            onPressed: () {
+                              Navigator.of(context).popUntil((route) => route.isFirst);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+              new FlatButton(
+                child: new Text("繼續購物"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+
+    }
+
+
+
 
     void _showDialog(int result) {
       String message = "";
@@ -54,6 +106,12 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
         print(message);
       } else if (result == 1 ){
         message = "系統發生錯誤，請再試一次";
+      } else if(result == 2){
+        message = "請先登入";
+      } else if (result ==3){
+        message = "已成功完成付款，請取貨，歡迎再次光臨鴻福堂";
+      } else if (result ==4){
+        message = "對不起，你的餘額不足，請增值過後再試一之";
       }
       // flutter defined function
       showDialog(
@@ -68,7 +126,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               new FlatButton(
                 child: new Text("關閉"),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  if(message == "已成功完成付款，請取貨，歡迎再次光臨鴻福堂"){
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    _showLogoutDialog();
+                  }else{
+                    Navigator.of(context).pop();
+
+                  }
                 },
               ),
             ],
@@ -76,6 +140,45 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
         },
       );
     }
+    void _showConfirmationDialog(){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // return object of type Dialog
+          return AlertDialog(
+            title: new Text("通知"),
+            content: new Text("請確認賬單"),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              new FlatButton(
+                child: new Text("確認"),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  int responseCode = await cartListVM.submitOrder(userVM.userID);
+                  if(responseCode == 1){
+                    _showDialog(3);
+                    await userVM.fetchUser(userVM.userID);
+                    cartListVM.clearCart();
+                  }else if (responseCode == 2){
+                    _showDialog(4);
+                  }
+
+                },
+              ),
+              new FlatButton(
+                child: new Text("關閉"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  return false;
+                },
+              ),
+            ],
+          );
+        },
+      );
+
+    }
+
 
     // TODO: implement build
     return Scaffold(
@@ -98,7 +201,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 print(cartItems[index].qty);
                 print(">>>>>>>>");
                 callback(newQty){
-//                  cartListVM.setQty(index, newQty);
+                  cartListVM.setQty(index, newQty);
 //                  setState(() {
 ////                    cartItems[index].qty = newQty;
 ////                    _calTotal();
@@ -392,8 +495,18 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               child:  Text("合共 \$" + cartListVM.total.toString()),
               ),
             Expanded(
-              child: new MaterialButton(onPressed: (){
-                cartListVM.submitOrder(Provider.of<UserViewModel>(context).userID);
+              child: new MaterialButton(
+                onPressed: () async {
+                  print(userVM.role);
+                  if(userVM.userID == 1){
+                    print("You are not member");
+                    _showDialog(2);
+                  }else {
+                    _showConfirmationDialog();
+
+
+
+                  }
               },
                 color: Colors.red,
                 child:  new Text("結帳",

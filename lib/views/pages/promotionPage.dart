@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:untitled/app/constant.dart';
 import 'package:untitled/models/product.dart';
 import 'package:untitled/models/promotion.dart';
+import 'package:untitled/models/user.dart';
 import 'package:untitled/view_models/promotionPageViewModel.dart';
 import 'package:untitled/view_models/promotionViewModel.dart';
 import 'package:untitled/view_models/userViewModel.dart';
@@ -144,23 +145,24 @@ class PromotionWidget extends StatelessWidget{
                 ),
 //                promotion.relatedProducts.length > 0 ? RelatedProductsWidget(promotion.relatedProducts)
                 promotion.relatedProducts.length > 0 ?
-
-                    Row(
+                    Column(
                       children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                                        Container(
+                                            padding: EdgeInsets.all(10),
+                                             child: Text("相關產品：")
+
+                                        )
+                            ],
+                            ),
                         Container(
-                          padding: EdgeInsets.all(10),
-                            child: Text("相關產品：")
-
+                        child: RelatedProductsWidget(promotion.relatedProducts),
+                        height: 250,
                         )
+
                       ],
-                  ): null,
-                Container(
-                  child: RelatedProductsWidget(promotion.relatedProducts),
-                  height: 250,
-
-
-                )
-
+                    ): Container(),
 
               ],
             )
@@ -214,39 +216,40 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var userVM = Provider.of<UserViewModel>(context);
 
-    Future<bool> addSearchHistory() async {
-//      var url = 'http://localhost:1337/user/searched';
-//      var url = 'https://fypsailsjs.herokuapp.com/user/searched';
-      String urlSuffix = "/user/searched";
-      String urlPrefix = Constant.getUrlPrefix();
-      String url = urlPrefix + urlSuffix;
-      print(url);
-      print(this.product.id);
-//    var response = await http.get(url);
-//    print(jsonDecode(response.body));
-//    Map<String, String> headers = {"Content-type": "application/json"};
-      Map data = {
-        "userID" : Provider.of<UserViewModel>(context, listen: false).userID,
-        "productID" : this.product.id,
-      };
-      var json = jsonEncode(data);
-      var  response = await http.post(
-          url,
-          headers: {"Content-Type": "application/json"},
-          body: json
-      );
-      // check the status code for the result
-      int statusCode = response.statusCode;
-      print(statusCode);
-      var body = jsonDecode(response.body);
-      print(body);
-      if(statusCode == 200){
-        return true;
-      }else {
-        return false;
-      }
-    }
+//    Future<bool> addSearchHistory() async {
+////      var url = 'http://localhost:1337/user/searched';
+////      var url = 'https://fypsailsjs.herokuapp.com/user/searched';
+//      String urlSuffix = "/user/searched";
+//      String urlPrefix = Constant.getUrlPrefix();
+//      String url = urlPrefix + urlSuffix;
+//      print(url);
+//      print(this.product.id);
+////    var response = await http.get(url);
+////    print(jsonDecode(response.body));
+////    Map<String, String> headers = {"Content-type": "application/json"};
+//      Map data = {
+//        "userID" : Provider.of<UserViewModel>(context, listen: false).userID,
+//        "productID" : this.product.id,
+//      };
+//      var json = jsonEncode(data);
+//      var  response = await http.post(
+//          url,
+//          headers: {"Content-Type": "application/json"},
+//          body: json
+//      );
+//      // check the status code for the result
+//      int statusCode = response.statusCode;
+//      print(statusCode);
+//      var body = jsonDecode(response.body);
+//      print(body);
+//      if(statusCode == 200){
+//        return true;
+//      }else {
+//        return false;
+//      }
+//    }
     return Container(
         width: 200,
 //        height: ,
@@ -261,7 +264,7 @@ class ProductWidget extends StatelessWidget {
                         new ProductDetailsPage(product)
 
                     ));
-                    var response = await addSearchHistory();
+                    var response = await userVM.addSearchHistory(product.id);
                     print(response);
                     print("added 3");
                   },

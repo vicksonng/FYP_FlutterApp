@@ -19,6 +19,14 @@ class Constant {
   static String categoryListUrl = url("/category/list");
   static String getPromotionUrl = url("/promotion");
   static String registerUrl = url("/user/register");
+  static String fetchUserUrl = url("/user/view/");
+  static String fetchOrderUrl = url("/order/list/");
+
+  static String recommendationsMessageUBCF = "以下商品推薦是根據閣下的活動歷史來為你度身訂造的";
+  static String recommendationsMessageTopSales =  "以下商品推薦都是我們最暢銷的商品";
+  static String recommendationsMessageTopView =  "以下商品推薦都是我們最多人查看的商品";
+
+
 
 
   static String url(String suffix){

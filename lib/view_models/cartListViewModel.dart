@@ -73,7 +73,7 @@ class CartListViewModel extends ChangeNotifier {
   }
 
 
-  void submitOrder(userID) async {
+  Future<int> submitOrder(userID) async {
     if(cartList.length > 0) {
       var url = Constant.createOrderUrl;
       print(url);
@@ -129,20 +129,26 @@ class CartListViewModel extends ChangeNotifier {
           headers: {"Content-Type": "application/json"},
           body: json
       );
+      print(response);
 //      // check the status code for the result
-//      int statusCode = response.statusCode;
-//      print(statusCode);
+      int statusCode = response.statusCode;
+      print(statusCode);
+      print(response.body);
 //      var body = jsonDecode(response.body);
 
 
+
 //      print(body);
-//      if(statusCode == 200){
-//        this.session =  UserSession.fromJson(body);
-//        print(this.session.userID);
-//        return true;
-//      }else {
-//        return false;
-//      }
+      if(statusCode == 200){
+        return 1;
+      }else {
+        if(response.body == "notEnoughValue"){
+          return 2;
+        }else {
+           return 3;
+        }
+
+      }
     }
 
   }

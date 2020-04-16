@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/app/constant.dart';
 import 'package:untitled/models/productList.dart';
+import 'package:untitled/view_models/productListViewModel.dart';
 import 'package:untitled/view_models/userViewModel.dart';
 import 'package:untitled/views/pages/productDetailsPage.dart';
 import 'dart:io';
@@ -61,6 +62,7 @@ class _RecommendedListJaccardComponentState extends State<RecommendedListJaccard
   }
   @override
   Widget _futureRecommendedList(BuildContext context, AsyncSnapshot snap) {
+    var productVM = Provider.of<ProductListViewModel>(context);
     switch (snap.connectionState) {
       case ConnectionState.none:
         {
@@ -89,8 +91,10 @@ class _RecommendedListJaccardComponentState extends State<RecommendedListJaccard
               scrollDirection: Axis.horizontal,
               itemCount: snap.data.length,
               itemBuilder: (BuildContext context, int index) {
+                Product product = productVM.getSingleProduct(snap.data[index].id);
                 return ProductWidget(
-                        product: snap.data[index]
+//                        product: snap.data[index]
+                          product: product
 
                 );
 
@@ -124,39 +128,46 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var userVM = Provider.of<UserViewModel>(context);
 
-    Future<bool> addSearchHistory() async {
-//      var url = 'http://localhost:1337/user/searched';
-//      var url = 'https://fypsailsjs.herokuapp.com/user/searched';
-      String urlSuffix = "/user/searched";
-      String urlPrefix = Constant.getUrlPrefix();
-      String url = urlPrefix + urlSuffix;
-      print(url);
-      print(this.product.id);
-//    var response = await http.get(url);
-//    print(jsonDecode(response.body));
-//    Map<String, String> headers = {"Content-type": "application/json"};
-      Map data = {
-        "userID" : Provider.of<UserViewModel>(context, listen: false).userID,
-        "productID" : this.product.id,
-      };
-      var json = jsonEncode(data);
-      var  response = await http.post(
-          url,
-          headers: {"Content-Type": "application/json"},
-          body: json
-      );
-      // check the status code for the result
-      int statusCode = response.statusCode;
-      print(statusCode);
-      var body = jsonDecode(response.body);
-      print(body);
-      if(statusCode == 200){
-        return true;
-      }else {
-        return false;
-      }
+    var isSales = false;
+    if(product.salesBuyXGetYList.length > 0 || product.salesDiscountList.length > 0 || product.salesSpecialPriceList.length > 0){
+      print("is ok JaccarD......");
+      isSales = true;
     }
+
+//    Future<bool> addSearchHistory() async {
+////      var url = 'http://localhost:1337/user/searched';
+////      var url = 'https://fypsailsjs.herokuapp.com/user/searched';
+//      String urlSuffix = "/user/searched";
+//      String urlPrefix = Constant.getUrlPrefix();
+//      String url = urlPrefix + urlSuffix;
+//      print(url);
+//      print(this.product.id);
+////    var response = await http.get(url);
+////    print(jsonDecode(response.body));
+////    Map<String, String> headers = {"Content-type": "application/json"};
+//      Map data = {
+//        "userID" : Provider.of<UserViewModel>(context, listen: false).userID,
+//        "productID" : this.product.id,
+//      };
+//      var json = jsonEncode(data);
+//      var  response = await http.post(
+//          url,
+//          headers: {"Content-Type": "application/json"},
+//          body: json
+//      );
+//      // check the status code for the result
+//      int statusCode = response.statusCode;
+//      print(statusCode);
+//      var body = jsonDecode(response.body);
+//      print(body);
+//      if(statusCode == 200){
+//        return true;
+//      }else {
+//        return false;
+//      }
+//    }
     return Container(
         width: 200,
 //        height: 100,
@@ -171,7 +182,7 @@ class ProductWidget extends StatelessWidget {
                         new ProductDetailsPage(product)
 
                     ));
-                    var response = await addSearchHistory();
+                    var response = await userVM.addSearchHistory(product.id);
                     print(response);
                     print("added 3");
                   },
@@ -195,10 +206,18 @@ class ProductWidget extends StatelessWidget {
                             ],
                           )
                       ),
-                      child: Image.network(
-                          product.picture,
-                          width: 200,
-//                          height: 100,
+                      child: Stack(
+                        children: <Widget>[
+                          Image.network(product.picture),
+                          isSales? new Container(
+                              height: 80,
+                              child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Image.asset("image/sales.png")
+                              )
+                          ): Container()
+                        ],
+
                       )
 //                    product.picture,
 //                    fit: BoxFit.cover,

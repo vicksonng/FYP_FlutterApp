@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/models/category.dart';
 import 'package:untitled/view_models/productListViewModel.dart';
+import 'package:untitled/views/components/productListCategory.dart';
 import 'package:untitled/views/components/productsListComponent.dart';
 import 'package:untitled/views/pages/shoppingCartPage.dart';
 
@@ -10,13 +11,17 @@ class CategoryProductPage extends StatefulWidget{
   Category category;
   CategoryProductPage(this.category);
 
-
   _CategoryProductPageState createState() => new _CategoryProductPageState();
 }
 
 class _CategoryProductPageState extends State<CategoryProductPage>{
+
   @override
   Widget build(BuildContext context) {
+    print("Building CategoryProductPageState............");
+
+    print("The type is ...." + widget.category.productType);
+
     // TODO: implement build
     return Scaffold(
       appBar: new AppBar(
@@ -64,7 +69,7 @@ class _CategoryProductPageState extends State<CategoryProductPage>{
 
           Container(
             height: 400,
-            child: ProductsListComponent(widget.category.productType),
+            child: new ProductsListCategory(widget.category.productType),
 //            FutureBuilder(
 //                future: Provider.of<ProductListViewModel>(context, listen: false).getProductsType(widget.category.categoryName),
 //                builder: _futureCategoryList
