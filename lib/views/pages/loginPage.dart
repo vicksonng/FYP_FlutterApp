@@ -51,7 +51,7 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.lightGreen,
         title: Text('會員登入'),
         actions: <Widget>[
-          new IconButton(icon: Icon(Icons.search, color: Colors.white,), onPressed: (){}),
+//          new IconButton(icon: Icon(Icons.search, color: Colors.white,), onPressed: (){}),
         ],
       ),
       body: Column(
@@ -67,7 +67,8 @@ class LoginPage extends StatelessWidget {
                     child:  Column(
                       children: <Widget> [
                         Padding(
-                          child: Image.network("https://www.hungfooktong.com/wp-content/uploads/2018/08/hft_newlogo.png"),
+//                          child: Image.network("https://www.hungfooktong.com/wp-content/uploads/2018/08/hft_newlogo.png"),
+                            child: Image.asset("image/p1.jpg"),
                           padding: EdgeInsets.only(top:20, bottom : 20)
 
                         ),

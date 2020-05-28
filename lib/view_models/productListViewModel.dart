@@ -21,7 +21,7 @@ class ProductListViewModel extends ChangeNotifier {
     String url = Constant.getProductUrl;
     print(url);
     var response = await http.get(url);
-    var result = jsonDecode(response.body);
+    var result = await jsonDecode(response.body);
 
     List<dynamic> product_list_dynamic = result.map((i) => Product.fromJson(i)).toList();
     List<Product> product_list = new List<Product>();
@@ -31,17 +31,18 @@ class ProductListViewModel extends ChangeNotifier {
 
     this.products = product_list;
 
-
     await this.fetchSalesBuyXGetY();
+    print("Finish 1");
     await this.fetchSalesDiscount();
+    print("Finish 2");
     await this.fetchSalesSpecialPrice();
+    print("Finish 3");
     await this.fetchSalesDiscountRate();
+    print("Finish 1");
     print("Print fetchedProducts ??????????");
     print(this.products);
 //    notifyListeners();
     return this.products;
-
-
   }
 
   fetchSalesBuyXGetY() async {
@@ -234,24 +235,6 @@ class ProductListViewModel extends ChangeNotifier {
   }
 
 
-//  Future<void> fetchProducts(String productType) async {
-//    String urlPrefix = App.getUrlPrefix();
-//    String urlSuffix = "/products/category/" + productType;
-//    String url = urlPrefix + urlSuffix;
-////    var url = 'http://localhost:1337/products/category/' + productType;
-//////    var url = 'https://fypsailsjs.herokuapp.com/products/category/' + productType;
-//    print(url);
-//    var response = await http.get(url);
-//    var result = jsonDecode(response.body);
-////    print(result[0]);
-////    print(Product.fromJson((result[0])).toString());
-//
-//    List<dynamic> product_list_dynamic = result.map((i) => Product.fromJson(i)).toList();
-//    List<Product> product_list = new List<Product>();
-//    for(int i = 0; i < product_list_dynamic.length ; i ++){
-//      product_list.add(product_list_dynamic[i]);
-//    }
-//    this.products = product_list;
-//  }
+
 
 }

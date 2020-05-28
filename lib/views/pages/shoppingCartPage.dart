@@ -186,7 +186,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
         backgroundColor: Colors.lightGreen,
         title: Text('我的購物車'),
         actions: <Widget>[
-          new IconButton(icon: Icon(Icons.search, color: Colors.white,), onPressed: (){}),
+//          new IconButton(icon: Icon(Icons.search, color: Colors.white,), onPressed: (){}),
         ],
       ),
 

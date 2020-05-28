@@ -157,10 +157,11 @@ class ProductWidget extends StatelessWidget {
                         builder: (context) =>
                         new ProductDetailsPage(product)
                     ));
-                    var response = await userVM.addSearchHistory(product.id);
-                    print(response);
-                    print("added");
-
+                    if(userVM.role == "member"){
+                      var response = await userVM.addSearchHistory(product.id);
+                      print(response);
+                      print("added");
+                    }
                   },
 
                   child: GridTile(

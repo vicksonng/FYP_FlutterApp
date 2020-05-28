@@ -77,8 +77,8 @@ class _CategoryPageState extends State<CategoryPage> {
         backgroundColor: Colors.lightGreen,
         title: Text('商品類型'),
         actions: <Widget>[
-          new IconButton(icon: Icon(Icons.search, color: Colors.white,),
-            onPressed: () {}),
+//          new IconButton(icon: Icon(Icons.search, color: Colors.white,),
+//            onPressed: () {}),
           new IconButton(
               icon: Icon(Icons.shopping_cart, color: Colors.white,),
                 onPressed: () {

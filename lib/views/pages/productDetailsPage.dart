@@ -64,8 +64,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           backgroundColor: Colors.lightGreen,
           title: Text('商品詳情'),
           actions: <Widget>[
-            new IconButton(icon: Icon(Icons.search, color: Colors.white,),
-                onPressed: () {}),
+//            new IconButton(icon: Icon(Icons.search, color: Colors.white,),
+//                onPressed: () {}),
             new IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white,),
                 onPressed: () {

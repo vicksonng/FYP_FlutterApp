@@ -104,9 +104,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.lightGreen,
-        title: Text('鴻福堂Home+'),
+        title: Align(
+          child: Padding(
+            child: Text('鴻福堂Home+'),
+            padding: EdgeInsets.all(5)
+          ),
+          alignment: Alignment.centerLeft,
+        ),
         actions: <Widget>[
-          new IconButton(icon: Icon(Icons.search, color: Colors.white,), onPressed: (){}),
+//          new IconButton(icon: Icon(Icons.search, color: Colors.white,), onPressed: (){}),
           new IconButton(icon: Icon(Icons.shopping_cart, color: Colors.white,), onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => new ShoppingCartPage()));
           })

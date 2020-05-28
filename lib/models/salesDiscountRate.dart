@@ -34,7 +34,7 @@ class SalesDiscountRate {
     print(this.discountRate);
     if(qty >= this.minQty){
       print(this.discountRate.toDouble()/10);
-      newPrice = newPrice * (1 - this.discountRate.toDouble()/100);
+      newPrice -= num.parse((newPrice * (this.discountRate.toDouble()/100)).toStringAsFixed(1));
       print("new price: " + newPrice.toString());
     }
     return newPrice;

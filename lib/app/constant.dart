@@ -21,10 +21,12 @@ class Constant {
   static String registerUrl = url("/user/register");
   static String fetchUserUrl = url("/user/view/");
   static String fetchOrderUrl = url("/order/list/");
+  static String recommendationsIbcfUrl = url("/products/getRecommedationsIBCF/");
 
-  static String recommendationsMessageUBCF = "以下商品推薦是根據閣下的活動歷史來為你度身訂造的";
+  static String recommendationsMessageUBCF = "以下商品推薦是我們為你度身訂造的";
   static String recommendationsMessageTopSales =  "以下商品推薦都是我們最暢銷的商品";
   static String recommendationsMessageTopView =  "以下商品推薦都是我們最多人查看的商品";
+  static String recommendationsMessageIBCF = "以下商品是根據你的購物紀錄來為你度身訂造的";
 
 
 

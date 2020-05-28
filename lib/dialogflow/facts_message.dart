@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/dialogflow/dialog_flow.dart';
+import 'package:untitled/dialogflow/productListMessage.dart';
 import 'package:untitled/dialogflow/recommendationsMessage.dart';
 import 'package:untitled/dialogflow/welcomeMessage.dart';
 import 'package:untitled/models/category.dart';
@@ -62,6 +63,10 @@ class Facts extends StatelessWidget {
         List<Category> categories = Provider.of<CategoryViewModel>(context).categoryList;
         print(categories.toString());
         messageBody = new CategoryMessage(categories, this.callback);
+      }else if(messageType == "response-showProductsMessage"){
+        Category category = Provider.of<CategoryViewModel>(context).getCategoryById(int.parse(messages[0].trim()));
+        List<Product> products = Provider.of<ProductListViewModel>(context).getProductsCategory(category.productType);
+        messageBody = new ProductListMessage(products, category);
       }
 
     }

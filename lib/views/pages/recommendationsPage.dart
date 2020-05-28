@@ -25,6 +25,7 @@ class _RecommendationsPageState extends State<RecommendationsPage>{
     }else{
       recommendations = [
         new Recommendations("專屬推介", Constant.recommendationsMessageUBCF, Constant.recommendationsUbcfUrl + Provider.of<UserViewModel>(context).userID.toString()),
+        new Recommendations("你會喜歡的商品", Constant.recommendationsMessageIBCF, Constant.recommendationsIbcfUrl +Provider.of<UserViewModel>(context).userID.toString()),
         new Recommendations("最暢銷商品", Constant.recommendationsMessageTopSales, Constant.recommendationsTopSalesUrl),
         new Recommendations("最受注目商品", Constant.recommendationsMessageTopView, Constant.recommendationsTopViewUrl)
       ];
@@ -37,14 +38,13 @@ class _RecommendationsPageState extends State<RecommendationsPage>{
         backgroundColor: Colors.lightGreen,
         title: Text('精選推介'),
         actions: <Widget>[
-                new IconButton(icon: Icon(Icons.search, color: Colors.white,), onPressed: (){}),
+//                new IconButton(icon: Icon(Icons.search, color: Colors.white,), onPressed: (){}),
             ],
         ),
       body: ListView.builder(
           itemCount: recommendations.length,
           itemBuilder: (BuildContext context, int index){
               return RecommendationsHorizontalComponent(recommendations[index]);
-
           }
       ),
     );

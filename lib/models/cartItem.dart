@@ -46,7 +46,7 @@ class CartItem{
     }
     if(this.selectedSalesSpecialPriceList.length>0){
       for(int i = 0 ; i < this.selectedSalesSpecialPriceList.length ;  i ++){
-        subTotal = this.selectedSalesSpecialPriceList[i].calPrice(this.qty, subTotal);
+        subTotal = this.selectedSalesSpecialPriceList[i].calPrice(this.qty, subTotal, this.product.currentPrice.toDouble());
         print("SpecialPrice :" + subTotal.toString());
       }
     }

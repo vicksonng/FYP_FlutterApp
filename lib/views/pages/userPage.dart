@@ -171,12 +171,12 @@ class _UserPageState extends State<UserPage>{
   Widget build(BuildContext context) {
     final userVM = Provider.of<UserViewModel>(context);
     if(Provider.of<UserViewModel>(context, listen:false).userID > 1){
-      Timer.periodic(Duration(seconds: 300), (timer) {
-        Provider.of<UserViewModel>(context, listen: false).fetchUser(Provider
-            .of<UserViewModel>(context)
-            .userID);
-        print("Updated user");
-      });
+//      Timer.periodic(Duration(seconds: 300), (timer) {
+//        Provider.of<UserViewModel>(context, listen: false).fetchUser(Provider
+//            .of<UserViewModel>(context)
+//            .userID);
+//        print("Updated user");
+//      });
     }
 
     // TODO: implement build
@@ -249,7 +249,7 @@ class _UserPageState extends State<UserPage>{
                         List<Order> orderList = await userVM.fetchOrder();
                         print("OKOKOKOK");
 
-                        print(orderList[0]);
+                        print(orderList.length);
                         Navigator.push(context, MaterialPageRoute(builder: (context) => new OrderListPage(orderList)));
                         print("PUSHEDDDDDDD");
                      },

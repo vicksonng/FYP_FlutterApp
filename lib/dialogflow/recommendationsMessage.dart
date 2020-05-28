@@ -4,6 +4,7 @@ import 'package:untitled/models/cartItem.dart';
 import 'package:untitled/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/view_models/cartListViewModel.dart';
+import 'package:untitled/view_models/userViewModel.dart';
 import 'package:untitled/views/components/quantityPicker.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:untitled/views/pages/productDetailsPage.dart';
@@ -59,6 +60,7 @@ class SingleProductRecommendations extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final userVM = Provider.of<UserViewModel>(context);
     int quantity =0;
     callback = (int quantity){
       this.quantity = quantity;
@@ -193,11 +195,16 @@ class SingleProductRecommendations extends StatelessWidget{
                               borderRadius: new BorderRadius.circular(18.0),
 //                          side: BorderSide(color: Colors.red)
                             ),
-                            onPressed: (){
+                            onPressed: () async {
                               Navigator.of(context).push(new MaterialPageRoute(
                                   builder: (context) =>
                                   new ProductDetailsPage(product)
                               ));
+                              if(userVM.role == "member"){
+                                var response = await userVM.addSearchHistory(product.id);
+                                print(response);
+                                print("added");
+                              }
                             },
                             child: Text("查看詳情", style: TextStyle(color: Colors.white),)
                         )

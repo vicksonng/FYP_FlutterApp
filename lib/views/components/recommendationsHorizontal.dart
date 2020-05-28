@@ -76,7 +76,7 @@ class _RecommendationsHorizontalComponentState extends State<RecommendationsHori
           print("done...");
           print(snap.data);
           if (snap.data == null) {
-            return Text("No products");
+            return Container();
           } else {
             return
               Container(
@@ -202,9 +202,14 @@ class ProductWidget extends StatelessWidget {
                             builder: (context) =>
                             new ProductDetailsPage(product)
                         ));
-                        var response = await userVM.addSearchHistory(product.id);
-                        print(response);
-                        print("added 2");
+//                        var response = await userVM.addSearchHistory(product.id);
+//                        print(response);
+//                        print("added 2");
+                        if(userVM.role == "member"){
+                          var response = await userVM.addSearchHistory(product.id);
+                          print(response);
+                          print("added");
+                        }
                       },
                       child: GridTile(
                           footer: Container(

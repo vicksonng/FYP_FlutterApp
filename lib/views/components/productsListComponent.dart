@@ -25,6 +25,7 @@ class ProductsListComponent extends StatefulWidget {
 class _ProductsListComponentState extends State<ProductsListComponent> {
   Future<List<Product>> product_list;
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -119,39 +120,6 @@ class ProductWidget extends StatelessWidget {
       isSales = true;
     }
 
-
-//    Future<bool> addSearchHistory() async {
-////      var url = 'http://localhost:1337/user/searched';
-////      var url = 'https://fypsailsjs.herokuapp.com/user/searched';
-//      String urlSuffix = "/user/searched";
-//      String urlPrefix = Constant.getUrlPrefix();
-//      String url = urlPrefix + urlSuffix;
-//      print(url);
-//      print(this.product.id);
-////    var response = await http.get(url);
-////    print(jsonDecode(response.body));
-////    Map<String, String> headers = {"Content-type": "application/json"};
-//      Map data = {
-//        "userID" : Provider.of<UserViewModel>(context, listen: false).userID,
-//        "productID" : this.product.id,
-//      };
-//      var json = jsonEncode(data);
-//      var  response = await http.post(
-//          url,
-//          headers: {"Content-Type": "application/json"},
-//          body: json
-//      );
-//      // check the status code for the result
-//      int statusCode = response.statusCode;
-//      print(statusCode);
-//      var body = jsonDecode(response.body);
-//      print(body);
-//      if(statusCode == 200){
-//        return true;
-//      }else {
-//        return false;
-//      }
-//    }
     return Container(
       height: 280,
       child: Card(
@@ -164,9 +132,11 @@ class ProductWidget extends StatelessWidget {
                       builder: (context) =>
                       new ProductDetailsPage(product)
                   ));
-                  var response = await userVM.addSearchHistory(product.id);
-                  print(response);
-                  print("added");
+                  if(userVM.role == "member"){
+                    var response = await userVM.addSearchHistory(product.id);
+                    print(response);
+                    print("added");
+                  }
 
                 },
 

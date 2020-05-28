@@ -193,7 +193,7 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
 //      name: "User",
 //      type: true,
 //    );
-    Facts message = Facts(messageType, messages, "小幫手", true, this.callback);
+    Facts message = Facts(messageType, messages, "我", true, this.callback);
     setState(() {
       messageList.insert(0, message);
     });

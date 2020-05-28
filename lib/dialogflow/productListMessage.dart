@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/models/cartItem.dart';
+import 'package:untitled/models/category.dart';
 import 'package:untitled/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/view_models/cartListViewModel.dart';
+import 'package:untitled/view_models/userViewModel.dart';
 import 'package:untitled/views/components/quantityPicker.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:untitled/views/pages/productDetailsPage.dart';
@@ -12,8 +14,9 @@ import 'package:dart_random_choice/dart_random_choice.dart';
 class ProductListMessage extends StatelessWidget {
 
   final List<Product> products;
+  final Category category;
 
-  ProductListMessage(this.products);
+  ProductListMessage(this.products, this.category);
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +25,14 @@ class ProductListMessage extends StatelessWidget {
 //    return Container(
 //      height: 400,
 //      width: 400,
-    return Container(
+    return
+      this.products.length> 0?
+      Container(
         height: 470,
         child:  Column(
           children: <Widget>[
             ListTile(
-              title: Text("小幫手誠意為你推薦"),
+              title: Text("以下為 " + this.category.categoryName +" 的商品"),
             ),
             Flexible(
                 child: Swiper(
@@ -42,7 +47,9 @@ class ProductListMessage extends StatelessWidget {
 
           ],
         )
-    );
+    ): Container(
+        child: Text("對不起，暫時沒有相關商品")
+      );
 //
 //
 //    );
@@ -58,6 +65,7 @@ class SingleProduct extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final userVM = Provider.of<UserViewModel>(context);
     int quantity =0;
     callback = (int quantity){
       this.quantity = quantity;
@@ -192,11 +200,16 @@ class SingleProduct extends StatelessWidget{
                               borderRadius: new BorderRadius.circular(18.0),
 //                          side: BorderSide(color: Colors.red)
                             ),
-                            onPressed: (){
+                            onPressed: () async {
                               Navigator.of(context).push(new MaterialPageRoute(
                                   builder: (context) =>
                                   new ProductDetailsPage(product)
                               ));
+                              if(userVM.role == "member"){
+                                var response = await userVM.addSearchHistory(product.id);
+                                print(response);
+                                print("added");
+                              }
                             },
                             child: Text("查看詳情", style: TextStyle(color: Colors.white),)
                         )

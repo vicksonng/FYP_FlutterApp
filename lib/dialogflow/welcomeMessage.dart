@@ -10,7 +10,8 @@ class WelcomeMessage extends StatelessWidget{
     // TODO: implement build
     return new Column(
       children: <Widget>[
-        Image.network("https://www.hungfooktong.com/wp-content/uploads/2018/08/hft_newlogo.png"),
+//        Image.network("https://www.hungfooktong.com/wp-content/uploads/2018/08/hft_newlogo.png"),
+        Image.asset("image/p1.jpg"),
         Text("歡迎光臨鴻福堂，請問有什麼可以幫到你？\n請選擇服務："),
         new Column(
           children: <Widget>[

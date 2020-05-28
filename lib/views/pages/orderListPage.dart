@@ -13,7 +13,8 @@ class OrderListPage extends StatelessWidget{
         backgroundColor: Colors.lightGreen,
         title: Text('交易紀錄'),
         ),
-        body: ListView(
+        body: orderList.length > 0 ?
+        ListView(
           children: <Widget>[
             ListTile(
               title: Text("以下是閣下的交易紀錄"),
@@ -182,8 +183,11 @@ class OrderListPage extends StatelessWidget{
 //              )
 //            )
          ]
-      )
+      ): Center(
+        child: Text("閣下沒有任何交易紀錄"),
+      ),
     );
+
   }
 }
 

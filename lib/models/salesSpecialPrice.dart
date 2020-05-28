@@ -27,11 +27,19 @@ class SalesSpecialPrice {
     );
   }
 
-  double calPrice(int qty , double subTotal){
-    double newPrice = subTotal;
-    if(qty > this.qty){
-      newPrice -= this.price;
+  double calPrice(int qty , double subTotal, double itemPrice){
+    double newPrice = subTotal.toDouble();
+    var times = qty.toDouble() ~/ this.qty.toDouble();
+    if(times> 0){
+      var discount = itemPrice * this.qty - this.price;
+      var totalDiscount = discount * times;
+      newPrice -=totalDiscount;
     }
+
+//    var remainingQty = qty - this.qty*times;
+//    if(qty >= this.qty){
+//      newPrice - this.price;
+//    }
     return newPrice;
 
   }

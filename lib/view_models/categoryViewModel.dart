@@ -30,5 +30,14 @@ class CategoryViewModel extends ChangeNotifier{
     return this.categoryList;
   }
 
+  Category getCategoryById(id) {
+    for(int i = 0; i < this.categoryList.length ; i++){
+      if(id == this.categoryList[i].id){
+        return this.categoryList[i];
+      }
+    }
+    return null;
+  }
+
 
 }

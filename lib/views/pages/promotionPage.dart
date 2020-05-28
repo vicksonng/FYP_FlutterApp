@@ -35,8 +35,8 @@ class _PromotionPageState extends State<PromotionPage> {
           backgroundColor: Colors.lightGreen,
           title: Text('推廣活動'),
           actions: <Widget>[
-            new IconButton(icon: Icon(Icons.search, color: Colors.white,),
-              onPressed: () {}),
+//            new IconButton(icon: Icon(Icons.search, color: Colors.white,),
+//              onPressed: () {}),
             new IconButton(
               icon: Icon(Icons.shopping_cart, color: Colors.white,),
               onPressed: () {
@@ -264,9 +264,14 @@ class ProductWidget extends StatelessWidget {
                         new ProductDetailsPage(product)
 
                     ));
-                    var response = await userVM.addSearchHistory(product.id);
-                    print(response);
-                    print("added 3");
+//                    var response = await userVM.addSearchHistory(product.id);
+//                    print(response);
+//                    print("added 3");
+                    if(userVM.role == "member"){
+                      var response = await userVM.addSearchHistory(product.id);
+                      print(response);
+                      print("added");
+                    }
                   },
                   child: GridTile(
                       footer: Container(
