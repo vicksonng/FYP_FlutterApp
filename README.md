@@ -1,4 +1,4 @@
-# untitled
+# FYP Mobile App for Kiosk
 
 A new Flutter project.
 
